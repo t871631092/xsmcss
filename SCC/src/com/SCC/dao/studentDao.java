@@ -8,17 +8,17 @@ import java.sql.SQLException;
 import com.SCC.model.student;
 
 public class studentDao {
-	public student signin (Connection con,student stu) throws SQLException{
+	public student signin(Connection con, student stu) throws SQLException {
 		student resultstudent = null;
 		PreparedStatement pstmt = null;
-		
+
 		try {
 			String sql = "select * from student where id = ? and password = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, stu.getId());
 			pstmt.setString(2, stu.getPassword());
 			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				resultstudent = new student();
 				resultstudent.setId(rs.getInt("id"));
 				resultstudent.setPassword(rs.getString("password"));
@@ -28,11 +28,10 @@ public class studentDao {
 				resultstudent.setDescription(rs.getString("description"));
 			}
 			return resultstudent;
-		}catch(Exception e){
-            e.printStackTrace();
-        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return resultstudent;
 	}
-	
 
 }

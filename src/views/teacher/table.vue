@@ -1,39 +1,36 @@
 <template>
-	<div class="bg-white h-100p p-25">
-		<el-divider content-position="left"><h4>学生管理</h4></el-divider>
-		<el-form :inline="true" :model="formInline" class="demo-form-inline">
-			<el-form-item label="Id">
-				<el-input
-					v-model="formInline.user"
-					placeholder="输入学生Id"
-				></el-input>
-			</el-form-item>
-			<el-form-item label="姓名">
-				<el-input
-					v-model="formInline.user"
-					placeholder="输入学生姓名"
-				></el-input>
-			</el-form-item>
-			<el-form-item label="密码">
-				<el-input
-					v-model="formInline.user"
-					placeholder="输入学生密码"
-				></el-input>
-			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" @click="onSubmit">查询</el-button>
-			</el-form-item>
-		</el-form>
-		<el-table :data="tableData" height="85%" style="width: 100%">
-			<el-table-column prop="id" label="Id"> </el-table-column>
-			<el-table-column prop="name" label="姓名"> </el-table-column>
+	<div class="height-100p">
+		<el-table
+			:data="tableData"
+			class="tb-edit"
+            height="85%"
+			style="width: 100%"
+			highlight-current-row
+			@row-click="handleCurrentChange"
+		>
+			<el-table-column label="姓名">
+				<template scope="scope">
+					<span>{{ scope.row.name }}</span>
+				</template>
+			</el-table-column>
+			<el-table-column prop="address" label="成绩">
+				<template scope="scope">
+					<el-input
+						size="small"
+						v-model="scope.row.address"
+						placeholder="请输入内容"
+						@change="handleEdit(scope.$index, scope.row)"
+					></el-input>
+					<span>{{ scope.row.address }}</span>
+				</template>
+			</el-table-column>
 			<el-table-column label="操作" width="150">
-				<template slot-scope="scope">
+				<template scope="scope">
+					<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
 					<el-button
-						size="mini"
-            type="danger"
+						size="small"
 						@click="handleDelete(scope.$index, scope.row)"
-						>删除</el-button
+						>保存</el-button
 					>
 				</template>
 			</el-table-column>
@@ -43,12 +40,8 @@
 
 <script>
 export default {
-    data() {
-      return {
-        formInline: {
-          user: '',
-          region: ''
-        },
+	data() {
+		return {
 			tableData: [
 				{
 					date: "2016-05-02",
@@ -151,14 +144,33 @@ export default {
 					address: "80"
 				}
 			]
-      }
-    },
-    methods: {
-      onSubmit() {
-        console.log('submit!');
-      }
-    }
-  }
+		};
+	},
+	methods: {
+		handleCurrentChange(row, event, column) {
+			console.log(row, event, column, event.currentTarget);
+		},
+		handleEdit(index, row) {
+			console.log(index, row);
+		},
+		handleDelete(index, row) {
+			console.log(index, row);
+		}
+	}
+};
 </script>
 
-<style></style>
+<style lang="scss">
+.tb-edit .el-input {
+	display: none;
+}
+.tb-edit .current-row .el-input {
+	display: block;
+}
+.tb-edit .current-row .el-input + span {
+	display: none;
+}
+.height-100p{
+    height: 100%;
+}
+</style>

@@ -16,7 +16,7 @@
 					:collapse="isCollapse"
           router 
 				>
-					<el-menu-item index="1" id="headerIcon">
+					<el-menu-item index="/" id="headerIcon">
 						<span slot="title" v-if="!isCollapse">
 							<h4 style="line-height:60px;margin-left:18px;">选课系统
                 <i
@@ -40,23 +40,23 @@
 						<i class="el-icon-menu"></i>
 						<span slot="title">成绩管理</span>
 					</el-menu-item>
-					<el-menu-item index="3" v-if="user.type&&user.type==2">
+					<el-menu-item index="/coursemark" v-if="user.type&&user.type==2">
 						<i class="el-icon-document"></i>
 						<span slot="title">学生评分</span>
 					</el-menu-item>
-					<el-menu-item index="4" v-if="user.type&&user.type!=3">
+					<el-menu-item index="/account" v-if="user.type&&user.type!=3">
 						<i class="el-icon-setting"></i>
 						<span slot="title">个人信息</span>
 					</el-menu-item>
-					<el-menu-item index="5" v-if="user.type&&user.type==3">
+					<el-menu-item index="/admin/student" v-if="user.type&&user.type==3">
 						<i class="el-icon-setting"></i>
 						<span slot="title">学生管理</span>
 					</el-menu-item>
-					<el-menu-item index="6" v-if="user.type&&user.type==3">
+					<el-menu-item index="/admin/teacher" v-if="user.type&&user.type==3">
 						<i class="el-icon-setting"></i>
 						<span slot="title">教师管理</span>
 					</el-menu-item>
-					<el-menu-item index="7" v-if="user.type&&user.type==3">
+					<el-menu-item index="/admin/course" v-if="user.type&&user.type==3">
 						<i class="el-icon-setting"></i>
 						<span slot="title">课程管理</span>
 					</el-menu-item>
@@ -65,11 +65,11 @@
 			</el-aside>
 			<el-container>
 				<el-header id="header" height="60px">
-          <h4 style="line-height:60px;">
+          <!-- <h4 style="line-height:60px;">
           {{$route.name}}
-          </h4>
+          </h4> -->
 				</el-header>
-				<el-main>
+				<el-main class="bg-light">
 					<router-view />
 				</el-main>
 			</el-container>
