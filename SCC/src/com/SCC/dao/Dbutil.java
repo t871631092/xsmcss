@@ -19,7 +19,7 @@ import java.util.List;
 
 
 public class Dbutil {
-	public static final String url = "jdbc:mysql://localhost/css?useSSL=false";
+	public static final String url = "jdbc:mysql://47.96.131.166/SC?useSSL=false";
 	public static final String name = "com.mysql.jdbc.Driver";
 	public static final String user = "root";
 	public static final String password = "";

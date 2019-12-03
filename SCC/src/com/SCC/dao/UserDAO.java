@@ -15,12 +15,12 @@ public class UserDAO {
 	public Result login(String username, String password, HttpSession session) {
 		Result result = new Result();
 		try {
-			sql = "select name,password,3 as type from user "
+			sql = "select id as username,name,password,3 as type from user "
 					+ "UNION "
-					+ "select name,password,1 as type from student "
+					+ "select id as username,name,password,1 as type from student "
 					+ "UNION "
-					+ "select name,password,2 as type from teacher "
-					+ " where name = ?;";
+					+ "select id as username,name,password,2 as type from teacher "
+					+ " where id = ?;";
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql, username);
 			System.out.print(ret.getRow());

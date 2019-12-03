@@ -48,4 +48,41 @@
 	</package>
 	<!-- 课程 Course API -->
 	<!-- 管理 Manage API -->
+		<package name="admin" extends="struts-default,json-default" namespace="/admin">
+		<interceptors>
+			<interceptor name="myOptions" class="xsm520.interceptor.optionInterceptor"></interceptor>
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="myOptions"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myStack" />
+		<!-- 学生 -->
+		<action name="student" class="com.SCC.action.AdminAction" method="student">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+			<result name="none" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 教师 -->
+		<action name="teacher" class="com.SCC.action.AdminAction" method="teacher">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+			<result name="none" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 课程 -->
+		<action name="course" class="com.SCC.action.AdminAction" method="course">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+			<result name="none" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
 </struts>

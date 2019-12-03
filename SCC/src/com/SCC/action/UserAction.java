@@ -26,6 +26,8 @@ public class UserAction extends BaseAction {
 	public void setResult(Result result) {
 		this.result = result;
 	}
+
+	/* ¼ì²éµÇÂ½ */
 	public String isLogin() {
 		Boolean islogin=(Boolean)this.request.getSession().getAttribute("isLogin");
 		if(islogin==null||islogin.equals(false)) {
@@ -50,6 +52,7 @@ public class UserAction extends BaseAction {
 			return Action.SUCCESS;
 		}
 	}
+	/* µÇÂ½ */
 	public String login() throws IOException {
 		JSONObject data = this.getRequestPostData(request);
 		String username = data.getString("username");
@@ -58,6 +61,7 @@ public class UserAction extends BaseAction {
 		setResult(uService.login(username, password, session));
 		return Action.SUCCESS;
 	}
+	/* ×¢Ïú */
 	public String logout() {
 		this.session.removeAttribute("username");
 		this.session.removeAttribute("nickname");
