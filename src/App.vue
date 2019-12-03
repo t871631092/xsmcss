@@ -14,58 +14,87 @@
 					@open="handleOpen"
 					@close="handleClose"
 					:collapse="isCollapse"
-          router 
+					router
 				>
 					<el-menu-item index="/" id="headerIcon">
 						<span slot="title" v-if="!isCollapse">
-							<h4 style="line-height:60px;margin-left:18px;">选课系统
-                <i
+							<h4 style="line-height:60px;margin-left:18px;">
+								选课系统
+								<i
 									class="el-icon-s-fold white"
 									v-if="!isCollapse"
 									v-on:click="toggleMenu"
 								></i>
-              </h4>
+							</h4>
 						</span>
-            <i
+						<i
 							class="el-icon-s-unfold white"
 							v-if="isCollapse"
 							v-on:click="toggleMenu"
 						></i>
 					</el-menu-item>
-					<el-menu-item index="/student/course" v-if="user.type&& user.type==1">
+					<el-menu-item
+						index="/student/course"
+						v-if="user.type && user.type == 1"
+					>
 						<i class="el-icon-menu"></i>
 						<span slot="title">选课管理</span>
 					</el-menu-item>
-					<el-menu-item index="/student/score" v-if="user.type&&user.type==1">
+					<el-menu-item
+						index="/student/score"
+						v-if="user.type && user.type == 1"
+					>
 						<i class="el-icon-menu"></i>
 						<span slot="title">成绩管理</span>
 					</el-menu-item>
-					<el-menu-item index="/coursemark" v-if="user.type&&user.type==2">
+					<el-menu-item
+						index="/coursemark"
+						v-if="user.type && user.type == 2"
+					>
 						<i class="el-icon-document"></i>
 						<span slot="title">学生评分</span>
 					</el-menu-item>
-					<el-menu-item index="/account" v-if="user.type&&user.type!=3">
+					<el-menu-item
+						index="/account"
+						v-if="user.type && user.type != 3"
+					>
 						<i class="el-icon-setting"></i>
 						<span slot="title">个人信息</span>
 					</el-menu-item>
-					<el-menu-item index="/admin/student" v-if="user.type&&user.type==3">
+					<el-menu-item
+						index="/admin/student"
+						v-if="user.type && user.type == 3"
+					>
 						<i class="el-icon-setting"></i>
 						<span slot="title">学生管理</span>
 					</el-menu-item>
-					<el-menu-item index="/admin/teacher" v-if="user.type&&user.type==3">
+					<el-menu-item
+						index="/admin/teacher"
+						v-if="user.type && user.type == 3"
+					>
 						<i class="el-icon-setting"></i>
 						<span slot="title">教师管理</span>
 					</el-menu-item>
-					<el-menu-item index="/admin/course" v-if="user.type&&user.type==3">
+					<el-menu-item
+						index="/admin/course"
+						v-if="user.type && user.type == 3"
+					>
 						<i class="el-icon-setting"></i>
 						<span slot="title">课程管理</span>
+					</el-menu-item>
+					<el-menu-item
+						v-if="user.type && user.type != 0"
+						v-on:click="logout"
+					>
+						<i class="el-icon-setting"></i>
+						<span slot="title">注销</span>
 					</el-menu-item>
 				</el-menu>
 				<!-- 菜单end -->
 			</el-aside>
 			<el-container>
 				<el-header id="header" height="60px">
-          <!-- <h4 style="line-height:60px;">
+					<!-- <h4 style="line-height:60px;">
           {{$route.name}}
           </h4> -->
 				</el-header>
@@ -82,16 +111,16 @@ export default {
 		return {
 			isCollapse: true
 		};
-  },
-  created:function(){
-    document.title="在线选课系统 Course Selection System";
-  },
-  computed:{
+	},
+	created: function() {
+		document.title = "在线选课系统 Course Selection System";
+	},
+	computed: {
 		user() {
-      console.log(this.$store.state.user);
+			console.log(this.$store.state.user);
 			return this.$store.state.user;
 		}
-  },
+	},
 	methods: {
 		toggleMenu() {
 			this.isCollapse = !this.isCollapse;
@@ -101,13 +130,26 @@ export default {
 		},
 		handleClose(key, keyPath) {
 			console.log(key, keyPath);
+		},
+		logout() {
+      let self = this;
+			this.Logout(function(data) {
+				if (data) {
+					self.$store.state.user = {
+						username: "",
+						isLogin: false,
+						type: 0
+          };
+          self.$router.push({ path: "/" });
+				}
+			});
 		}
-  },
-  watch:{
-    $route(to,from){
-      document.title = "01谢诗敏在线选课系统—"+this.$route.name;
-    }
-  }
+	},
+	watch: {
+		$route(to, from) {
+			document.title = "01谢诗敏在线选课系统—" + this.$route.name;
+		}
+	}
 };
 </script>
 <style lang="scss">
@@ -155,10 +197,10 @@ body,
 	background-color: #42b983;
 	color: white;
 }
-.margin-0{
-  margin: 0!important;
+.margin-0 {
+	margin: 0 !important;
 }
-.white{
-  color: white!important;
+.white {
+	color: white !important;
 }
 </style>

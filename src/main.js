@@ -11,7 +11,7 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import globe from "./globe";
 
-import './assets/main.scss';
+import "./assets/main.scss";
 
 Vue.config.productionTip = false;
 
@@ -20,12 +20,12 @@ Vue.use(ElementUI);
 Vue.prototype.axios = axios;
 Vue.use(globe);
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:8080/xsmkqqblog/api";
+axios.defaults.baseURL = "http://localhost:8080/SCC/";
 
 router.beforeEach((to, from, next) => {
-  console.log(to.meta.permission);
 	if (
-		store.state.user.type && to.meta.permission==0 || to.meta.permission.some(i=>i==store.state.user.type)
+		(store.state.user.type && to.meta.permission == 0) ||
+		to.meta.permission.some(i => i == store.state.user.type)
 	) {
 		next();
 	} else {
@@ -40,7 +40,15 @@ new Vue({
 	beforeCreate: function() {
 		let self = this;
 		this.getLogin(function(data) {
-			//self.$store.state.user = data.user;
+      if(data){
+        self.$store.state.user = {
+          username: data.username,
+          isLogin: data.isLogin,
+          type: data.type
+        };
+      }else{
+        self.$router.push({ path: "/" });
+      }
 		});
 	}
 }).$mount("#app");

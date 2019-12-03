@@ -3,15 +3,49 @@
 <!DOCTYPE struts PUBLIC
         "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
         "http://struts.apache.org/dtds/struts-2.5.dtd">
- 
+
 <struts>
-  <!--在这里设置好每一个Action-->
- 
-<package name="SigninAction" namespace="/" extends="struts-default">
-	<action name="SigninAction" class="com.SCC.action.SigninAction">
-		<result name="success" >/student.jsp</result>  
-        <result name="input">/teacher.jsp</result>  
-	</action>
-</package>
- 
+	<constant name="struts.action.excludePattern"
+		value="/static/.*?" />
+	<constant name="struts.devMode" value="true" />
+	<!-- 用户 USER API -->
+	<package name="user" extends="struts-default,json-default" namespace="/user">
+		<interceptors>
+			<interceptor name="myOptions" class="xsm520.interceptor.optionInterceptor"></interceptor>
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="myOptions"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myStack" />
+		<!-- 登陆 -->
+		<action name="login" class="com.SCC.action.UserAction" method="login">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+			<result name="none" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 获取登录信息 -->
+		<action name="isLogin" class="com.SCC.action.UserAction" method="isLogin">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+			<result name="none" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	    <!-- 注销 -->
+		<action name="logout" class="com.SCC.action.UserAction" method="logout">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+			<result name="none" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+	<!-- 课程 Course API -->
+	<!-- 管理 Manage API -->
 </struts>

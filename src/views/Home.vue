@@ -12,6 +12,7 @@
 			<div
 				class=" nav flex-column justify-content-center flex-item"
 				style="width: 500px;"
+				v-if="user.type==0"
 			>
 				<div class="card-body item-center">
 					<h5 class="card-title">用户登陆</h5>
@@ -33,8 +34,12 @@
 						</el-form-item>
 					</el-form>
 					<el-button type="primary" @click="onSubmit">登陆</el-button>
-					<el-button type="primary" @click="register">注册</el-button>
 				</div>
+			</div>
+			<div v-if="user.type!=0">
+				<h1 v-if="user.type==1">学生角色</h1>
+				<h1 v-if="user.type==2">教师角色</h1>
+				<h1 v-if="user.type==3">管理角色</h1>
 			</div>
 		</div>
 	</div>
@@ -49,6 +54,11 @@ export default {
 			}
 		};
 	},
+	computed:{
+		user(){
+			return this.$store.state.user
+		}
+	},
 	methods: {
 		index() {
 			this.$router.push({ path: "/" });
@@ -59,14 +69,17 @@ export default {
 		onSubmit() {
 			let self = this;
 			this.axios
-				.post("Login", {
+				.post("user/login", {
 					username: this.form.name,
 					password: this.form.pass
 				})
 				.then(function(req) {
 					if (req.data.success) {
-						self.$store.state.isLogin = req.data.data.isLogin;
-						self.$store.state.username = req.data.data.username;
+						self.$store.state.user = {
+							isLogin : req.data.data.isLogin,
+							username:req.data.data.username,
+							type:req.data.data.type
+						};
 						self.index();
 					} else {
 						alert(req.data.msg);

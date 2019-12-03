@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     user:{
       isLogin:false,
-      type:3,
+      type:0,
       name:"未登录"
     }
   },
