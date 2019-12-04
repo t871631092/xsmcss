@@ -3,6 +3,7 @@ package com.SCC.dao;
 import java.sql.ResultSet;
 import java.util.List;
 
+import com.SCC.model.Page;
 import com.SCC.model.Result;
 import com.SCC.model.User;
 import com.SCC.model.coures;
@@ -16,13 +17,13 @@ public class AdminDAO {
 	String sql = null;
 
 	// 获取学生
-	public Result getStudent() {
+	public Result getStudent(Page p) {
 		Result result = new Result();
 		result.setSuccess(false);
 		try {
-			sql = "select * from student;";
+			sql = "select * from student LIMIT ?,?;";
 			db = new Dbutil();
-			ResultSet ret = db.executeQuery(sql);
+			ResultSet ret = db.executeQuery(sql,p.getRow(),p.getSize());
 			List dataList = Dbutil.populate(ret, student.class);
 			result.setCount(dataList.size());
 			result.setData(dataList);
@@ -65,7 +66,7 @@ public class AdminDAO {
 			int ret = db.executeUpdate(sql, s.getId(), s.getName(), s.getPassword());
 			if (ret == 1) {
 				db.close();
-				Result dataResult = getStudent();
+				Result dataResult = getStudent(Page.d());
 				dataResult.setMsg("添加成功");
 				return dataResult;
 			} else {
@@ -112,7 +113,7 @@ public class AdminDAO {
 			int ret = db.executeUpdate(sql, s.getId());
 			if (ret == 1) {
 				db.close();
-				Result dataResult = getStudent();
+				Result dataResult = getStudent(Page.d());
 				dataResult.setMsg("删除成功");
 				return dataResult;
 			} else {
@@ -126,13 +127,13 @@ public class AdminDAO {
 	}
 
 	// 获取教师
-	public Result getTeacher() {
+	public Result getTeacher(Page p) {
 		Result result = new Result();
 		result.setSuccess(false);
 		try {
-			sql = "select * from teacher;";
+			sql = "select * from teacher LIMIT ?,?;";
 			db = new Dbutil();
-			ResultSet ret = db.executeQuery(sql);
+			ResultSet ret = db.executeQuery(sql,p.getRow(),p.getSize());
 			List dataList = Dbutil.populate(ret, teacher.class);
 			result.setCount(dataList.size());
 			result.setData(dataList);
@@ -175,7 +176,7 @@ public class AdminDAO {
 			int ret = db.executeUpdate(sql, t.getId(), t.getName(), t.getPassword());
 			if (ret == 1) {
 				db.close();
-				Result dataResult = getTeacher();
+				Result dataResult = getTeacher(Page.d());
 				dataResult.setMsg("添加成功");
 				return dataResult;
 			} else {
@@ -222,7 +223,7 @@ public class AdminDAO {
 			int ret = db.executeUpdate(sql, t.getId());
 			if (ret == 1) {
 				db.close();
-				Result dataResult = getTeacher();
+				Result dataResult = getTeacher(Page.d());
 				dataResult.setMsg("删除成功");
 				return dataResult;
 			} else {
@@ -235,12 +236,12 @@ public class AdminDAO {
 		}
 	}
 
-	public Result getCourse() {
+	public Result getCourse(Page p) {
 		Result result = new Result();
 		try {
-			sql = "select * from coures;";
+			sql = "select * from coures LIMIT ?,?;";
 			db = new Dbutil();
-			ResultSet ret = db.executeQuery(sql);
+			ResultSet ret = db.executeQuery(sql,p.getRow(),p.getSize());
 			List dataList = Dbutil.populate(ret, coures.class);
 			result.setCount(dataList.size());
 			result.setData(dataList);
@@ -284,7 +285,7 @@ public class AdminDAO {
 				int ret = db.executeUpdate(sql, c.getName(), c.getTeacher_id(), c.getCapacity(),c.getCategory(),c.getPeriod(),c.getDescription());
 				if (ret == 1) {
 					db.close();
-					Result dataResult = getCourse();
+					Result dataResult = getCourse(Page.d());
 					dataResult.setMsg("添加成功");
 					return dataResult;
 				} else {
@@ -303,7 +304,7 @@ public class AdminDAO {
 				int ret = db.executeUpdate(sql, c.getName(), c.getTeacher_id(), c.getCapacity(),c.getCategory(),c.getPeriod(),c.getDescription(),c.getId());
 				if (ret == 1) {
 					db.close();
-					Result dataResult = getCourse();
+					Result dataResult = getCourse(Page.d());
 					dataResult.setMsg("修改成功");
 					return dataResult;
 				} else {
@@ -350,7 +351,7 @@ public class AdminDAO {
 			int ret = db.executeUpdate(sql, c.getId());
 			if (ret == 1) {
 				db.close();
-				Result dataResult = getCourse();
+				Result dataResult = getCourse(Page.d());
 				dataResult.setMsg("删除成功");
 				return dataResult;
 			} else {

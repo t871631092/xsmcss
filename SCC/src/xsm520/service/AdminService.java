@@ -1,6 +1,7 @@
 package xsm520.service;
 
 import com.SCC.dao.AdminDAO;
+import com.SCC.model.Page;
 import com.SCC.model.Result;
 import com.SCC.model.coures;
 import com.SCC.model.student;
@@ -9,8 +10,8 @@ import com.SCC.model.teacher;
 public class AdminService {
 	
 	AdminDAO aDao = new AdminDAO();
-	public Result getStudent() {
-		return aDao.getStudent();
+	public Result getStudent(Page p) {
+		return aDao.getStudent(p);
 	}
 	public Result insStudent(student s) {
 		return aDao.insStudent(s);
@@ -22,8 +23,8 @@ public class AdminService {
 		return aDao.delStudent(s);
 	}
 	
-	public Result getCourse() {
-		return aDao.getCourse();
+	public Result getCourse(Page p) {
+		return aDao.getCourse(p);
 	}
 	
 	public Result insCourse(coures c) {
@@ -36,8 +37,8 @@ public class AdminService {
 		return aDao.delCourse(c);
 	}
 	
-	public Result getTeacher() {
-		return aDao.getTeacher();
+	public Result getTeacher(Page p) {
+		return aDao.getTeacher(p);
 	}
 	public Result insTeacher(teacher t) {
 		return aDao.insTeacher(t);

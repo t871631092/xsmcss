@@ -12,6 +12,8 @@ import org.apache.struts2.ServletActionContext;
 
 import com.SCC.model.User;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.opensymphony.xwork2.ActionSupport;
 
 
@@ -43,6 +45,12 @@ public class BaseAction extends ActionSupport  {
 		this.response.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
 		this.response.setHeader("Access-Control-Allow-Credentials", "true");
 		this.response.setHeader("Access-Control-Allow-Headers", "content-type");
-
+		FastJsonConfig fastJsonConfig = new FastJsonConfig();
+		fastJsonConfig.setSerializerFeatures(
+		          SerializerFeature.WriteNullListAsEmpty,
+		          SerializerFeature.WriteNullStringAsEmpty,
+		          SerializerFeature.WriteNullBooleanAsFalse,
+		          SerializerFeature.WriteNullNumberAsZero
+		  );
 	}
 }

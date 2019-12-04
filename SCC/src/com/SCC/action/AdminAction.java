@@ -2,10 +2,12 @@ package com.SCC.action;
 
 import java.io.IOException;
 
+import com.SCC.model.Page;
 import com.SCC.model.Result;
 import com.SCC.model.coures;
 import com.SCC.model.student;
 import com.SCC.model.teacher;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.opensymphony.xwork2.Action;
 
@@ -31,8 +33,9 @@ public class AdminAction extends BaseAction {
 		String method = this.request.getMethod();
 		JSONObject data = this.getRequestPostData(request);
 		student s = (student)JSONObject.toJavaObject(data, student.class);
+		Page p = Page.fromReq(request);
 		if (method.equals("GET")) {
-			setResult(aService.getStudent());
+			setResult(aService.getStudent(p));
 		} else if(method.equals("POST")) {
 			setResult(aService.insStudent(s));
 		} else if(method.equals("PUT")) {
@@ -48,8 +51,9 @@ public class AdminAction extends BaseAction {
 		String method = this.request.getMethod();
 		JSONObject data = this.getRequestPostData(request);
 		teacher s = (teacher)JSONObject.toJavaObject(data, teacher.class);
+		Page p = Page.fromReq(request);
 		if (method.equals("GET")) {
-			setResult(aService.getTeacher());
+			setResult(aService.getTeacher(p));
 		} else if(method.equals("POST")) {
 			setResult(aService.insTeacher(s));
 		} else if(method.equals("PUT")) {
@@ -64,8 +68,9 @@ public class AdminAction extends BaseAction {
 		String method = this.request.getMethod();
 		JSONObject data = this.getRequestPostData(request);
 		coures c = (coures)JSONObject.toJavaObject(data, coures.class);
+		Page p = Page.fromReq(request);
 		if (method.equals("GET")) {
-			setResult(aService.getCourse());
+			setResult(aService.getCourse(p));
 		} else if(method.equals("POST")) {
 			setResult(aService.insCourse(c));
 		} else if(method.equals("PUT")) {
