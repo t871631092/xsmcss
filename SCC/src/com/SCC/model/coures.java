@@ -4,15 +4,16 @@ public class coures {
 	private int id;
 	private String name;
 	private String category;
-	private String capacity;
-	private int teacher_id;
+	private int period;
+	private int capacity;
+	private String teacher_id;
 	private String description;
 
 	public coures() {
 		super();
 	}
 
-	public coures(int id, String name, String category, String capacity, int teacher_id) {
+	public coures(int id, String name, String category, int capacity, String teacher_id) {
 		this.id = id;
 		this.name = name;
 		this.category = category;
@@ -20,6 +21,17 @@ public class coures {
 		this.teacher_id = teacher_id;
 	}
 
+	public int getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(int period) {
+		this.period = period;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
 	public int getId() {
 		return id;
 	}
@@ -40,23 +52,20 @@ public class coures {
 		return category;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
 
-	public String getCapacity() {
+	public int getCapacity() {
 		return capacity;
 	}
 
-	public void setCapacity(String capacity) {
+	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
 
-	public int getTeacher_id() {
+	public String getTeacher_id() {
 		return teacher_id;
 	}
 
-	public void setTeacher_id(int teacher_id) {
+	public void setTeacher_id(String teacher_id) {
 		this.teacher_id = teacher_id;
 	}
 
@@ -67,5 +76,11 @@ public class coures {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	public boolean unVali() {
+		if (this.name.isEmpty()||this.teacher_id.isEmpty()||this.capacity==0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 }

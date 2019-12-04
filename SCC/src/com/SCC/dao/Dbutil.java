@@ -110,17 +110,19 @@ public class Dbutil {
              //将每一个字段取出进行赋值
              for(int i = 1;i<=colCount;i++){
                  Object value = rs.getObject(i);
-                 //寻找该列对应的对象属性
-                 for(int j=0;j<fields.length;j++){
-                     Field f = fields[j];
-                     //如果匹配进行赋值
-                     if(f.getName().equalsIgnoreCase(rsmd.getColumnName(i))){
-                         boolean flag = f.isAccessible();
-                         f.setAccessible(true);
-                         f.set(obj, value);
-                         f.setAccessible(flag);
+                 if (value != null) {
+                     //寻找该列对应的对象属性
+                     for(int j=0;j<fields.length;j++){
+                         Field f = fields[j];
+                         //如果匹配进行赋值
+                         if(f.getName().equalsIgnoreCase(rsmd.getColumnName(i))){
+                             boolean flag = f.isAccessible();
+                             f.setAccessible(true);
+                             f.set(obj, value);
+                             f.setAccessible(flag);
+                         }
                      }
-                 }
+				}
              }
              list.add(obj);
          }

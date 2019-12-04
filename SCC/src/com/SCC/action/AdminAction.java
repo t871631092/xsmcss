@@ -1,10 +1,15 @@
 package com.SCC.action;
 
+import java.io.IOException;
+
 import com.SCC.model.Result;
+import com.SCC.model.coures;
+import com.SCC.model.student;
+import com.SCC.model.teacher;
+import com.alibaba.fastjson.JSONObject;
 import com.opensymphony.xwork2.Action;
 
 import xsm520.service.AdminService;
-import xsm520.service.UserService;
 
 public class AdminAction extends BaseAction {
 
@@ -22,45 +27,51 @@ public class AdminAction extends BaseAction {
 		this.result = result;
 	}
 	/* 学生 */
-	public String student() {
+	public String student() throws IOException {
 		String method = this.request.getMethod();
+		JSONObject data = this.getRequestPostData(request);
+		student s = (student)JSONObject.toJavaObject(data, student.class);
 		if (method.equals("GET")) {
 			setResult(aService.getStudent());
 		} else if(method.equals("POST")) {
-			setResult(aService.insStudent());
+			setResult(aService.insStudent(s));
 		} else if(method.equals("PUT")) {
 			setResult(aService.updStudent());
 		} else if(method.equals("DELETE")) {
-			setResult(aService.delStudent());
+			setResult(aService.delStudent(s));
 		}
 		return Action.SUCCESS;
 		
 	}
 	/* 教师 */
-	public String teacher() {
+	public String teacher() throws IOException {
 		String method = this.request.getMethod();
+		JSONObject data = this.getRequestPostData(request);
+		teacher s = (teacher)JSONObject.toJavaObject(data, teacher.class);
 		if (method.equals("GET")) {
 			setResult(aService.getTeacher());
 		} else if(method.equals("POST")) {
-			setResult(aService.insTeacher());
+			setResult(aService.insTeacher(s));
 		} else if(method.equals("PUT")) {
 			setResult(aService.updTeacher());
 		} else if(method.equals("DELETE")) {
-			setResult(aService.delTeacher());
+			setResult(aService.delTeacher(s));
 		}
 		return Action.SUCCESS;
 	}
 	/* 课程 */
-	public String course() {
+	public String course() throws IOException {
 		String method = this.request.getMethod();
+		JSONObject data = this.getRequestPostData(request);
+		coures c = (coures)JSONObject.toJavaObject(data, coures.class);
 		if (method.equals("GET")) {
 			setResult(aService.getCourse());
 		} else if(method.equals("POST")) {
-			setResult(aService.insCourse());
+			setResult(aService.insCourse(c));
 		} else if(method.equals("PUT")) {
 			setResult(aService.updCourse());
 		} else if(method.equals("DELETE")) {
-			setResult(aService.delCourse());
+			setResult(aService.delCourse(c));
 		}
 		return Action.SUCCESS;
 	}

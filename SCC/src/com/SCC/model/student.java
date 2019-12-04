@@ -1,10 +1,12 @@
 package com.SCC.model;
 
+import org.apache.struts2.json.annotations.JSON;
+
 public class student {
-	private int id;
+	private String id;
 	private String password;
 	private String name;
-	private String credits;
+	private int credits;
 	private String major;
 	private String description;
 
@@ -12,19 +14,19 @@ public class student {
 		super();
 	}
 
-	public student(int id, String password) {
+	public student(String id, String password) {
 		this.id = id;
 		this.password = password;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-
+	@JSON(serialize=false)
 	public String getPassword() {
 		return password;
 	}
@@ -41,11 +43,11 @@ public class student {
 		this.name = name;
 	}
 
-	public String getCredits() {
+	public int getCredits() {
 		return credits;
 	}
 
-	public void setCredits(String credits) {
+	public void setCredits(int credits) {
 		this.credits = credits;
 	}
 
@@ -64,5 +66,11 @@ public class student {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	public boolean unVali() {
+		if (this.id.isEmpty()||this.password.isEmpty()||this.name.isEmpty()) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 }

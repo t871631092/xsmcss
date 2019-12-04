@@ -1,43 +1,43 @@
 package com.SCC.model;
 
 public class elective {
-	private int id;
-	private int student_id;
-	private int teacher_id;
+	private String uuid;
+	private String student_id;
+	private String teacher_id;
 	private String shoose;
-	private String achievement;
+	private int achievement;
 
 	public elective() {
 		super();
 	}
 
-	public elective(int id, int student_id, int teacher_id) {
-		this.id = id;
+	public elective(String uuid, String student_id, String teacher_id) {
+		this.uuid = uuid;
 		this.student_id = student_id;
 		this.teacher_id = teacher_id;
 	}
 
-	public int getId() {
-		return id;
+	public String getUuid() {
+		return uuid;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
-	public int getStudent_id() {
+	public String getStudent_id() {
 		return student_id;
 	}
 
-	public void setStudent_id(int student_id) {
+	public void setStudent_id(String student_id) {
 		this.student_id = student_id;
 	}
 
-	public int getTeacher_id() {
+	public String getTeacher_id() {
 		return teacher_id;
 	}
 
-	public void setTeacher_id(int teacher_id) {
+	public void setTeacher_id(String teacher_id) {
 		this.teacher_id = teacher_id;
 	}
 
@@ -49,11 +49,11 @@ public class elective {
 		this.shoose = shoose;
 	}
 
-	public String getAchievement() {
+	public int getAchievement() {
 		return achievement;
 	}
 
-	public void setAchievement(String achievement) {
+	public void setAchievement(int achievement) {
 		this.achievement = achievement;
 	}
 

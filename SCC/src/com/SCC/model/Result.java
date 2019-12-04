@@ -1,5 +1,7 @@
 package com.SCC.model;
 
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
+
 public class Result {
 	public boolean isSuccess() {
 		return success;
@@ -28,5 +30,20 @@ public class Result {
 	}
 	public void setCount(int count) {
 		this.count = count;
+	}
+	
+	public static Result ok(Object obj,int count,String msg) {
+		Result result = new Result();
+		result.setData(obj);
+		result.setCount(count);
+		result.setMsg(msg);
+		result.setSuccess(true);
+		return result;
+	}
+	public static Result bad(String msg) {
+		Result result = new Result();
+		result.setMsg(msg);
+		result.setSuccess(false);
+		return result;
 	}
 }
