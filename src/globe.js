@@ -35,10 +35,8 @@ exports.install = function(Vue) {
         //全局函数3
         this.axios.post(url,data)
         .then(function(req){
-            const data = req.data;
-            console.log(data);
-            if(data.success){
-                callback(data.data);
+            if(req.status==200){
+                callback(req.data);
             }else{
                 alert("wrong")
             }
@@ -47,14 +45,26 @@ exports.install = function(Vue) {
             console.log(error);
         });
     };
-    Vue.prototype.Get = function(url,callback) {
+    Vue.prototype.Get = function(url,params,callback) {
         //全局函数4
-        this.axios.get(url)
+        this.axios.get(url,{params})
         .then(function(req){
-            const data = req.data;
-            console.log(data);
-            if(data.success){
-                callback(data.data);
+            if(req.status==200){
+                callback(req.data);
+            }else{
+                alert("wrong")
+            }
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+    };
+    Vue.prototype.Delete = function(url,data,callback) {
+        //全局函数4
+        this.axios.delete(url,{"data":data})
+        .then(function(req){
+            if(req.status==200){
+                callback(req.data);
             }else{
                 alert("wrong")
             }

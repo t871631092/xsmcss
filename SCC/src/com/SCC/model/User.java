@@ -7,6 +7,9 @@ public class User {
 	String password;
 	String nickname;
 	Boolean isLogin;
+	String id;
+	String name;
+	String oldPassword;
 	int type;
 	
 	public Boolean getIsLogin() {
@@ -48,6 +51,30 @@ public class User {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
 	}
 
 }

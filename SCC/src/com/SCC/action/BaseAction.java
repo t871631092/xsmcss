@@ -45,6 +45,7 @@ public class BaseAction extends ActionSupport  {
 		this.response.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
 		this.response.setHeader("Access-Control-Allow-Credentials", "true");
 		this.response.setHeader("Access-Control-Allow-Headers", "content-type");
+		this.response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE");
 		FastJsonConfig fastJsonConfig = new FastJsonConfig();
 		fastJsonConfig.setSerializerFeatures(
 		          SerializerFeature.WriteNullListAsEmpty,

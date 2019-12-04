@@ -11,11 +11,13 @@ import com.SCC.model.student;
 import com.SCC.model.teacher;
 import com.mysql.cj.x.protobuf.MysqlxSession.Reset;
 
+import xsm520.interceptor.isloginInterceptor;
+
 public class AdminDAO {
 
 	Dbutil db = null;
 	String sql = null;
-
+	static String student = "student";
 	// 获取学生
 	public Result getStudent(Page p) {
 		Result result = new Result();
@@ -25,7 +27,9 @@ public class AdminDAO {
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql,p.getRow(),p.getSize());
 			List dataList = Dbutil.populate(ret, student.class);
-			result.setCount(dataList.size());
+			int count =count(student);
+			System.out.println(count);
+			result.setCount(count);
 			result.setData(dataList);
 			result.setSuccess(true);
 			System.out.println("Student表 获取数据(条): " + dataList.size());
@@ -44,7 +48,7 @@ public class AdminDAO {
 		}
 		// 检查id重复
 		try {
-			sql = "select count(*) from student where id = ?;";
+			sql = "select count(*) from student where id = ? ;";
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql, s.getId());
 			if (ret.next()) {
@@ -64,6 +68,7 @@ public class AdminDAO {
 			sql = "insert into student (id,name,password) values(?,?,?)";
 			db = new Dbutil();
 			int ret = db.executeUpdate(sql, s.getId(), s.getName(), s.getPassword());
+			System.out.println(s.getName());
 			if (ret == 1) {
 				db.close();
 				Result dataResult = getStudent(Page.d());
@@ -135,7 +140,7 @@ public class AdminDAO {
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql,p.getRow(),p.getSize());
 			List dataList = Dbutil.populate(ret, teacher.class);
-			result.setCount(dataList.size());
+			result.setCount(count("teacher"));
 			result.setData(dataList);
 			result.setSuccess(true);
 			System.out.println("Teacher表 获取数据(条): " + dataList.size());
@@ -243,7 +248,7 @@ public class AdminDAO {
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql,p.getRow(),p.getSize());
 			List dataList = Dbutil.populate(ret, coures.class);
-			result.setCount(dataList.size());
+			result.setCount(count("coures"));
 			result.setData(dataList);
 			result.setSuccess(true);
 			System.out.println("Coures表 获取数据(条): " + dataList.size());
@@ -268,7 +273,7 @@ public class AdminDAO {
 			if (ret.next()) {
 				if (ret.getInt(1) == 0) {
 					db.close();
-					return Result.bad("找不到教师ID");
+					return Result.bad("找不到课程ID");
 				} else {
 					db.close();
 				}
@@ -362,6 +367,24 @@ public class AdminDAO {
 			System.out.println("错误" + e.toString());
 			return Result.bad("错误" + e.toString());
 		}
+	}
+	// 计算总条数
+	public int count(String id) {
+		try {
+			sql = "select count(*) from "+id;
+			db = new Dbutil();
+			System.out.println(id);
+			ResultSet ret = db.executeQuery(sql);
+			if (ret.next()) {
+				int count =ret.getInt(1);
+				db.close();
+				return count;
+			}
+		} catch (Exception e) {
+			System.out.println("错误" + e.toString());
+			return 0;
+		}
+		return 0;
 	}
 }
 

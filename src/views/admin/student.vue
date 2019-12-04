@@ -1,164 +1,118 @@
 <template>
-	<div class="bg-white h-100p p-25">
+	<div class="bg-white h-100p p-25 container">
 		<el-divider content-position="left"><h4>学生管理</h4></el-divider>
-		<el-form :inline="true" :model="formInline" class="demo-form-inline">
+		<el-form :inline="true" :model="form" class="demo-form-inline">
 			<el-form-item label="Id">
 				<el-input
-					v-model="formInline.user"
+					v-model="form.id"
 					placeholder="输入学生Id"
 				></el-input>
 			</el-form-item>
 			<el-form-item label="姓名">
 				<el-input
-					v-model="formInline.user"
+					v-model="form.name"
 					placeholder="输入学生姓名"
 				></el-input>
 			</el-form-item>
 			<el-form-item label="密码">
 				<el-input
-					v-model="formInline.user"
+					v-model="form.password"
 					placeholder="输入学生密码"
 				></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="onSubmit">查询</el-button>
+				<el-button type="primary" @click="onSubmit">添加</el-button>
 			</el-form-item>
 		</el-form>
-		<el-table :data="tableData" height="85%" style="width: 100%">
+		<el-table :data="tableData" height="80%" style="width: 100%">
 			<el-table-column prop="id" label="Id"> </el-table-column>
 			<el-table-column prop="name" label="姓名"> </el-table-column>
 			<el-table-column label="操作" width="150">
 				<template slot-scope="scope">
 					<el-button
 						size="mini"
-            type="danger"
+						type="danger"
 						@click="handleDelete(scope.$index, scope.row)"
 						>删除</el-button
 					>
 				</template>
 			</el-table-column>
 		</el-table>
+		<div class="block m-t-25">
+			<el-pagination
+				@size-change="handleSizeChange"
+				@current-change="handleCurrentChange"
+				:current-page="page"
+				:page-sizes="[10, 20, 50, 100]"
+				:page-size="size"
+				layout="total, sizes, prev, pager, next, jumper"
+				:total="count"
+			>
+			</el-pagination>
+		</div>
 	</div>
 </template>
 
 <script>
 export default {
-    data() {
-      return {
-        formInline: {
-          user: '',
-          region: ''
-        },
-			tableData: [
-				{
-					date: "2016-05-02",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-04",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-01",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
+	data() {
+		return {
+			form: {
+				id: "",
+				name: "",
+				password: ""
+			},
+			tableData: [],
+			count: 0,
+			page: 1,
+			size: 10
+		};
+	},
+	mounted() {
+		this.getData();
+	},
+	methods: {
+		handleSizeChange(val) {
+			this.size = val;
+			this.getData();
+		},
+		handleCurrentChange(val) {
+			this.page = val;
+			this.getData();
+		},
+		onSubmit() {
+			let self = this;
+			this.Post(
+				"admin/student",
+				{ id:self.form.id,name:self.form.name,password:self.form.password},
+				function(data) {
+					self.tableData = data.data;
+					self.count = data.count;
 				}
-			]
-      }
-    },
-    methods: {
-      onSubmit() {
-        console.log('submit!');
-      }
-    }
-  }
+			);
+		},
+		getData() {
+			let self = this;
+			console.log(self.size);
+			this.Get(
+				"admin/student",
+				{ page: self.page - 1, size: self.size },
+				function(data) {
+					self.tableData = data.data;
+					self.count = data.count;
+				}
+			);
+		},
+		handleDelete(index,data1) {
+			let self = this;
+			this.Delete("admin/student",{id:data1.id},function(data) {
+					self.tableData = data.data;
+					self.count = data.count;
+				}
+			);
+		}
+	}
+};
 </script>
 
 <style></style>

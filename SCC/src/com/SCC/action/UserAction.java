@@ -3,10 +3,12 @@ package com.SCC.action;
 
 import java.io.IOException;
 
+import com.SCC.model.Page;
 import com.SCC.model.Result;
 import com.opensymphony.xwork2.Action;
 
 import com.SCC.model.User;
+import com.SCC.model.coures;
 import com.alibaba.fastjson.JSONObject;
 
 import xsm520.service.UserService;
@@ -43,6 +45,7 @@ public class UserAction extends BaseAction {
 			User user = new User();
 			user.setIsLogin(true);
 			user.setUsername((String)session.getAttribute("username"));
+			user.setNickname((String)session.getAttribute("nickname"));
 			user.setType((int)session.getAttribute("type"));
 			Result result = new Result();
 			result.setSuccess(true);
@@ -66,6 +69,7 @@ public class UserAction extends BaseAction {
 		this.session.removeAttribute("username");
 		this.session.removeAttribute("nickname");
 		this.session.removeAttribute("isLogin");
+		this.session.removeAttribute("type");
 		User user = new User();
 		user.setIsLogin(false);
 		Result result = new Result();
@@ -75,11 +79,20 @@ public class UserAction extends BaseAction {
 		return Action.SUCCESS;
 	}
 	/* 个人信息*/	
-	public String info() {
+	public String info() throws IOException {
+		String method = this.request.getMethod();
+		JSONObject data = this.getRequestPostData(request);
+		if (method.equals("GET")) {
+			setResult(uService.getInfo(data));
+		} else if(method.equals("POST")) {
+			setResult(uService.updateInfo(data));
+		}
 		return Action.SUCCESS;
 	}
 	/* 修改密码*/	
-	public String password() {
+	public String password() throws IOException {
+		JSONObject data = this.getRequestPostData(request);
+		setResult(uService.password((String)session.getAttribute("username"),(int)session.getAttribute("type"),data));
 		return Action.SUCCESS;
 	}
 }
