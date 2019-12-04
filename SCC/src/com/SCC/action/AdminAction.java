@@ -81,3 +81,7 @@ public class AdminAction extends BaseAction {
 		return Action.SUCCESS;
 	}
 }
+
+/**
+ * Write by Min
+ */

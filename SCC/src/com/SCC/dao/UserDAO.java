@@ -68,3 +68,7 @@ public class UserDAO {
 		return result;
 	}
 }
+
+/**
+ * Write by Xsm
+ */

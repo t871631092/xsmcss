@@ -74,4 +74,16 @@ public class UserAction extends BaseAction {
 		setResult(result);
 		return Action.SUCCESS;
 	}
+	/* 个人信息*/	
+	public String info() {
+		return Action.SUCCESS;
+	}
+	/* 修改密码*/	
+	public String password() {
+		return Action.SUCCESS;
+	}
 }
+
+/**
+ * Write by Shi
+ */

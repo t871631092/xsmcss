@@ -364,3 +364,7 @@ public class AdminDAO {
 		}
 	}
 }
+
+/**
+ * Write by Xsm
+ */

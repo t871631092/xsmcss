@@ -7,6 +7,7 @@ public class coures {
 	private int period;
 	private int capacity;
 	private String teacher_id;
+	private String teacher_name;
 	private String description;
 
 	public coures() {
@@ -21,6 +22,13 @@ public class coures {
 		this.teacher_id = teacher_id;
 	}
 
+	public String getTeacher_name() {
+		return teacher_name;
+	}
+
+	public void setTeacher_name(String teacher_name) {
+		this.teacher_name = teacher_name;
+	}
 	public int getPeriod() {
 		return period;
 	}
