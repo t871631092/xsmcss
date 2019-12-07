@@ -2,21 +2,18 @@
 	<div class="bg-white h-100p p-25 container">
 		<el-divider content-position="left"><h4>学生管理</h4></el-divider>
 		<el-form :inline="true" :model="form" class="demo-form-inline">
-			<el-form-item label="Id">
-				<el-input
-					v-model="form.id"
-					placeholder="输入学生Id"
-				></el-input>
+			<el-form-item label="用户名">
+				<el-input v-model="form.student_id" placeholder="输入学生Id"></el-input>
 			</el-form-item>
 			<el-form-item label="姓名">
 				<el-input
-					v-model="form.name"
+					v-model="form.student_name"
 					placeholder="输入学生姓名"
 				></el-input>
 			</el-form-item>
 			<el-form-item label="密码">
 				<el-input
-					v-model="form.password"
+					v-model="form.student_password"
 					placeholder="输入学生密码"
 				></el-input>
 			</el-form-item>
@@ -25,8 +22,8 @@
 			</el-form-item>
 		</el-form>
 		<el-table :data="tableData" height="80%" style="width: 100%">
-			<el-table-column prop="id" label="Id"> </el-table-column>
-			<el-table-column prop="name" label="姓名"> </el-table-column>
+			<el-table-column prop="student_id" label="Id"> </el-table-column>
+			<el-table-column prop="student_name" label="姓名"> </el-table-column>
 			<el-table-column label="操作" width="150">
 				<template slot-scope="scope">
 					<el-button
@@ -58,9 +55,9 @@ export default {
 	data() {
 		return {
 			form: {
-				id: "",
-				name: "",
-				password: ""
+				student_id: "",
+				student_name: "",
+				student_password: ""
 			},
 			tableData: [],
 			count: 0,
@@ -84,10 +81,19 @@ export default {
 			let self = this;
 			this.Post(
 				"admin/student",
-				{ id:self.form.id,name:self.form.name,password:self.form.password},
+				{
+					student_id: self.form.student_id,
+					student_name: self.form.student_name,
+					student_password: self.form.student_password
+				},
 				function(data) {
-					self.tableData = data.data;
-					self.count = data.count;
+					if (data.success) {
+						self.page = 1;
+						self.tableData = data.data;
+						self.count = data.count;
+					} else {
+						alert(data.msg);
+					}
 				}
 			);
 		},
@@ -98,18 +104,26 @@ export default {
 				"admin/student",
 				{ page: self.page - 1, size: self.size },
 				function(data) {
-					self.tableData = data.data;
-					self.count = data.count;
+					if (data.success) {
+						self.tableData = data.data;
+						self.count = data.count;
+					} else {
+						alert(data.msg);
+					}
 				}
 			);
 		},
-		handleDelete(index,data1) {
+		handleDelete(index, data1) {
 			let self = this;
-			this.Delete("admin/student",{id:data1.id},function(data) {
+			this.Delete("admin/student", { student_id: data1.student_id }, function(data) {
+				if (data.success) {
+					self.page = 1;
 					self.tableData = data.data;
 					self.count = data.count;
+				} else {
+					alert(data.msg);
 				}
-			);
+			});
 		}
 	}
 };

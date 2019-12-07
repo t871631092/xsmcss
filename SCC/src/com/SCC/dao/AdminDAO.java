@@ -48,9 +48,9 @@ public class AdminDAO {
 		}
 		// ºÏ≤Èid÷ÿ∏¥
 		try {
-			sql = "select count(*) from student where id = ? ;";
+			sql = "select count(*) from student where student_id = ? ;";
 			db = new Dbutil();
-			ResultSet ret = db.executeQuery(sql, s.getId());
+			ResultSet ret = db.executeQuery(sql, s.getStudent_id());
 			if (ret.next()) {
 				if (ret.getInt(1) == 0) {
 					db.close();
@@ -63,12 +63,12 @@ public class AdminDAO {
 			System.out.println("¥ÌŒÛ" + e.toString());
 			return Result.bad("¥ÌŒÛ" + e.toString());
 		}
-		// ≤Â»Î
+		// ≤Â»Î ∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞¢»´≤øSQL∂º“™÷ÿ–¥
 		try {
-			sql = "insert into student (id,name,password) values(?,?,?)";
+			sql = "insert into student (student_id,student_name,student_password) values(?,?,?)";
 			db = new Dbutil();
-			int ret = db.executeUpdate(sql, s.getId(), s.getName(), s.getPassword());
-			System.out.println(s.getName());
+			int ret = db.executeUpdate(sql, s.getStudent_id(), s.getStudent_name(), s.getStudent_password());
+			System.out.println(s.getStudent_name());
 			if (ret == 1) {
 				db.close();
 				Result dataResult = getStudent(Page.d());
@@ -91,14 +91,14 @@ public class AdminDAO {
 	// …æ≥˝—ß…˙
 	public Result delStudent(student s) {
 		// ºÏ≤È ‰»Î
-		if (s.getId().isEmpty()) {
+		if (s.getStudent_id().isEmpty()) {
 			return Result.bad("«ÎºÏ≤È ‰»Î ˝æ›");
 		}
-		// ºÏ≤Èid÷ÿ∏¥
+		// ºÏ≤Èid÷ÿ∏¥ ∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°’‚¿Ô“≤“™
 		try {
-			sql = "select count(*) from student where id = ?;";
+			sql = "select count(*) from student where student_id = ?;";
 			db = new Dbutil();
-			ResultSet ret = db.executeQuery(sql, s.getId());
+			ResultSet ret = db.executeQuery(sql, s.getStudent_id());
 			if (ret.next()) {
 				if (ret.getInt(1) == 0) {
 					db.close();
@@ -111,11 +111,11 @@ public class AdminDAO {
 			System.out.println("¥ÌŒÛ" + e.toString());
 			return Result.bad("¥ÌŒÛ" + e.toString());
 		}
-		// ≤Â»Î
+		// ≤Â»Î ∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°’‚¿Ô“≤“™
 		try {
-			sql = "delete from student where id = ?";
+			sql = "delete from student where student_id = ?";
 			db = new Dbutil();
-			int ret = db.executeUpdate(sql, s.getId());
+			int ret = db.executeUpdate(sql, s.getStudent_id());
 			if (ret == 1) {
 				db.close();
 				Result dataResult = getStudent(Page.d());
@@ -240,11 +240,11 @@ public class AdminDAO {
 			return Result.bad("¥ÌŒÛ" + e.toString());
 		}
 	}
-
+	// ªÒ»°øŒ≥Ã
 	public Result getCourse(Page p) {
 		Result result = new Result();
 		try {
-			sql = "select * from coures LIMIT ?,?;";
+			sql = "select c.*,t.name as teacher_name from coures c left join teacher t on c.teacher_id = t.id LIMIT ?,? ;";
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql,p.getRow(),p.getSize());
 			List dataList = Dbutil.populate(ret, coures.class);
@@ -273,7 +273,7 @@ public class AdminDAO {
 			if (ret.next()) {
 				if (ret.getInt(1) == 0) {
 					db.close();
-					return Result.bad("’“≤ªµΩøŒ≥ÃID");
+					return Result.bad("’“≤ªµΩΩÃ ¶ID");
 				} else {
 					db.close();
 				}
@@ -282,7 +282,7 @@ public class AdminDAO {
 			System.out.println("¥ÌŒÛ" + e.toString());
 			return Result.bad("¥ÌŒÛ" + e.toString());
 		}
-		if (c.getId()==0) {
+		if (c.getCoures_id()==0) {
 			// ≤Â»Î
 			try {
 				sql = "insert into coures (name,teacher_id,capacity,category,period,description) values(?,?,?,?,?,?)";
@@ -306,7 +306,7 @@ public class AdminDAO {
 			try {
 				sql = "UPDATE coures set name =?,teacher_id=?,capacity=?,category=?,period=?,description=? where id = ?";
 				db = new Dbutil();
-				int ret = db.executeUpdate(sql, c.getName(), c.getTeacher_id(), c.getCapacity(),c.getCategory(),c.getPeriod(),c.getDescription(),c.getId());
+				int ret = db.executeUpdate(sql, c.getName(), c.getTeacher_id(), c.getCapacity(),c.getCategory(),c.getPeriod(),c.getDescription(),c.getCoures_id());
 				if (ret == 1) {
 					db.close();
 					Result dataResult = getCourse(Page.d());
@@ -329,14 +329,14 @@ public class AdminDAO {
 	// …æ≥˝øŒ≥Ã
 	public Result delCourse(coures c) {
 		// ºÏ≤È ‰»Î
-		if (c.getId()==0) {
+		if (c.getCoures_id()==0) {
 			return Result.bad("«ÎºÏ≤È ‰»Î ˝æ›");
 		}
-		// ºÏ≤Èid÷ÿ∏¥
+		// ºÏ≤Èid÷ÿ∏¥ ∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°∞°’‚¿Ô“≤“™–¥π˝
 		try {
-			sql = "select count(*) from coures where id = ?;";
+			sql = "select count(*) from coures where coures_id = ?;";
 			db = new Dbutil();
-			ResultSet ret = db.executeQuery(sql, c.getId());
+			ResultSet ret = db.executeQuery(sql, c.getCoures_id());
 			if (ret.next()) {
 				if (ret.getInt(1) == 0) {
 					db.close();
@@ -351,9 +351,9 @@ public class AdminDAO {
 		}
 		// ≤Â»Î
 		try {
-			sql = "delete from coures where id = ?";
+			sql = "delete from coures where coures_id = ?";
 			db = new Dbutil();
-			int ret = db.executeUpdate(sql, c.getId());
+			int ret = db.executeUpdate(sql, c.getCoures_id());
 			if (ret == 1) {
 				db.close();
 				Result dataResult = getCourse(Page.d());

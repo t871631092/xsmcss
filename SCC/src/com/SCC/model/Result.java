@@ -2,6 +2,9 @@ package com.SCC.model;
 
 import org.eclipse.jdt.internal.compiler.ast.ThisReference;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+
 public class Result {
 	public boolean isSuccess() {
 		return success;
@@ -16,6 +19,7 @@ public class Result {
 		this.data = data;
 	}
 	boolean success;
+
 	Object data;
 	String msg;
 	int count;

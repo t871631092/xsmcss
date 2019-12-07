@@ -12,7 +12,7 @@
 			<div
 				class=" nav flex-column justify-content-center flex-item"
 				style="width: 500px;"
-				v-if="user.type==0"
+				v-if="user.type == 0"
 			>
 				<div class="card-body item-center">
 					<h5 class="card-title">用户登陆</h5>
@@ -36,10 +36,21 @@
 					<el-button type="primary" @click="onSubmit">登陆</el-button>
 				</div>
 			</div>
-			<div v-if="user.type!=0">
-				<h1 v-if="user.type==1">学生角色</h1>
-				<h1 v-if="user.type==2">教师角色</h1>
-				<h1 v-if="user.type==3">管理角色</h1>
+			<div v-if="user.type != 0" class="container">
+				<h2>{{ user.nickname }}</h2>
+				<el-divider content-position="right" v-if="user.type == 1"
+					><h5>学生</h5></el-divider
+				>
+				<el-divider content-position="right" v-if="user.type == 2"
+					><h5>教师</h5></el-divider
+				>
+				<el-divider content-position="right" v-if="user.type == 3"
+					><h5>管理</h5></el-divider
+				>
+				<div v-if="user.type == 1">
+					<p>专业:{{ data.student_major }}</p>
+					<p>已修学分:{{ data.electives_credits }}</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -51,13 +62,17 @@ export default {
 			form: {
 				name: "",
 				pass: ""
-			}
+			},
+			data: {}
 		};
 	},
-	computed:{
-		user(){
-			return this.$store.state.user
+	computed: {
+		user() {
+			return this.$store.state.user;
 		}
+	},
+	mounted() {
+		this.getInfo();
 	},
 	methods: {
 		index() {
@@ -66,28 +81,39 @@ export default {
 		register() {
 			this.$router.push({ path: "/register" });
 		},
+		getInfo() {
+			let self = this;
+			if (self.user.type == 1) {
+				this.Get("user/info", {}, function(data) {
+					if (data.success) {
+						self.data = data.data[0];
+					}
+				});
+			}
+		},
 		onSubmit() {
 			let self = this;
-			this.axios
-				.post("user/login", {
+			this.Post(
+				"user/login",
+				{
 					username: this.form.name,
 					password: this.form.pass
-				})
-				.then(function(req) {
-					if (req.data.success) {
+				},
+				function(data) {
+					if (data.success) {
+						const d = data.data;
 						self.$store.state.user = {
-							isLogin : req.data.data.isLogin,
-							username:req.data.data.username,
-							type:req.data.data.type
+							isLogin: d.isLogin,
+							username: d.username,
+							nickname: d.nickname,
+							type: d.type
 						};
-						self.index();
+						self.getInfo();
 					} else {
-						alert(req.data.msg);
+						alert(data.msg);
 					}
-				})
-				.catch(function(error) {
-					console.log(error);
-				});
+				}
+			);
 		}
 	}
 };

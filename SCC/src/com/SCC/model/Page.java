@@ -33,8 +33,10 @@ public class Page {
 	private Integer size;
 	
 	public static Page fromReq(HttpServletRequest request) {
+		System.out.println("page"+request.getParameter("page")+"size"+request.getParameter("size"));
 		int page = Integer.parseInt(request.getParameter("page")==null?"0":request.getParameter("page"));
 		int size = Integer.parseInt(request.getParameter("size")==null?"10":request.getParameter("size"));
+		System.out.println("page"+page+"size"+size);
 		Page page2 = new Page();
 		page2.setPage(page);
 		page2.setSize(size);

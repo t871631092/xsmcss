@@ -56,17 +56,15 @@ const routes = [
 		meta: {
 			permission: [2]
 		},
-		component: () => import("../views/teacher/mark.vue"),
-		children: [
-			{
-				path: ":id",
-				name: "个人信息",
-				meta: {
-					permission: [2]
-				},
-				component: () => import("../views/teacher/table.vue")
-			}
-		]
+		component: () => import("../views/teacher/mark.vue")
+	},
+	{
+		path: "/coursetable",
+		name: "课程查询",
+		meta: {
+			permission: [2]
+		},
+		component: () => import("../views/teacher/table.vue")
 	},
 	{
 		path: "/admin/student",

@@ -1,40 +1,38 @@
 <template>
-	<div class="height-100p">
-		<el-table
-			:data="tableData"
-			class="tb-edit"
-            height="85%"
-			style="width: 100%"
-			highlight-current-row
-			@row-click="handleCurrentChange"
-		>
-			<el-table-column label="姓名">
-				<template scope="scope">
-					<span>{{ scope.row.name }}</span>
-				</template>
-			</el-table-column>
-			<el-table-column prop="address" label="成绩">
-				<template scope="scope">
-					<el-input
-						size="small"
-						v-model="scope.row.address"
-						placeholder="请输入内容"
-						@change="handleEdit(scope.$index, scope.row)"
-					></el-input>
-					<span>{{ scope.row.address }}</span>
-				</template>
-			</el-table-column>
-			<el-table-column label="操作" width="150">
-				<template scope="scope">
-					<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
-					<el-button
-						size="small"
-						@click="handleDelete(scope.$index, scope.row)"
-						>保存</el-button
+	<div class="bg-white height-100p padding-25 noscroll">
+		<el-divider content-position="left"><h4>课程查询</h4></el-divider>
+		<el-row type="flex" class="height-100p" :gutter="10" justify="center">
+			<el-col :md="12">
+				<el-table :data="tableData" height="85%" style="width: 100%">
+					<el-table-column type="index" width="50"> </el-table-column>
+					<el-table-column prop="name" label="名称">
+					</el-table-column>
+					<el-table-column prop="category" label="类别">
+					</el-table-column>
+					<el-table-column prop="credit" label="学分">
+					</el-table-column>
+					<el-table-column prop="period" label="学时">
+					</el-table-column>
+					<el-table-column prop="capacity" label="容纳人数">
+					</el-table-column>
+					<el-table-column prop="unsurplus" label="确认人数">
+					</el-table-column>
+					<el-table-column prop="avgscore" label="平均成绩">
+					</el-table-column>
+				</el-table>
+				<div class="block m-t-25">
+					<el-pagination
+						@size-change="handleSizeChange"
+						@current-change="handleCurrentChange"
+						:current-page="page"
+						:page-sizes="[10, 20, 50, 100]"
+						:page-size="size"
+						layout="total, sizes, prev, pager, next, jumper"
+						:total="count"
 					>
-				</template>
-			</el-table-column>
-		</el-table>
+					</el-pagination>
+				</div> </el-col
+		></el-row>
 	</div>
 </template>
 
@@ -42,119 +40,71 @@
 export default {
 	data() {
 		return {
-			tableData: [
-				{
-					date: "2016-05-02",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-04",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-01",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				},
-				{
-					date: "2016-05-03",
-					name: "王小虎",
-					address: "80"
-				}
-			]
+			tableData: [],
+			courseData: [],
+			count: 0,
+			page: 1,
+			size: 10,
+			activeName: "",
+			cid: null
 		};
 	},
+	mounted() {
+		this.getCourseData();
+	},
 	methods: {
-		handleCurrentChange(row, event, column) {
-			console.log(row, event, column, event.currentTarget);
+		handleEdit(index, data) {
+			this.$set(this.tableData[index], "isSave", 1);
+			this.Save(this.cid, data.student_id, data.score, index);
 		},
-		handleEdit(index, row) {
-			console.log(index, row);
+		handleSave(index, data) {
+			this.$set(this.tableData[index], "isSave", 1);
+			this.Save(this.cid, data.student_id, data.score, index);
 		},
-		handleDelete(index, row) {
-			console.log(index, row);
+		Save(cid, sid, s, index) {
+			let self = this;
+			this.Post(
+				"course/addscore",
+				{
+					course_id: cid,
+					student_id: sid,
+					score: s
+				},
+				function(data) {
+					if (data.success) {
+						self.tableData[index].isSave = 0;
+					} else {
+						alert(data.msg);
+					}
+				}
+			);
+		},
+		handleSizeChange(val) {
+			this.size = val;
+			this.getData();
+		},
+		handleCurrentChange(val) {
+			this.page = val;
+			this.getData();
+		},
+		handleClick(data) {
+			console.log(data.name, self.activeName);
+			this.getData(data.name);
+		},
+		getCourseData() {
+			let self = this;
+			this.Get(
+				"admin/course",
+				{ page: self.page - 1, size: self.size },
+				function(data) {
+					if (data.success) {
+						self.tableData = data.data;
+						self.count = data.count;
+					} else {
+						alert(data.msg);
+					}
+				}
+			);
 		}
 	}
 };
@@ -170,7 +120,7 @@ export default {
 .tb-edit .current-row .el-input + span {
 	display: none;
 }
-.height-100p{
-    height: 100%;
+.height-100p {
+	height: 100%;
 }
 </style>

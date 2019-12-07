@@ -16,7 +16,7 @@
 					:collapse="isCollapse"
 					router
 				>
-					<el-menu-item index="/" id="headerIcon">
+					<el-menu-item id="headerIcon">
 						<span slot="title" v-if="!isCollapse">
 							<h4 style="line-height:60px;margin-left:18px;">
 								选课系统
@@ -33,6 +33,10 @@
 							v-on:click="toggleMenu"
 						></i>
 					</el-menu-item>
+					<el-menu-item index="/">
+						<i class="el-icon-menu"></i>
+						<span slot="title">首页</span>
+					</el-menu-item>
 					<el-menu-item
 						index="/student/course"
 						v-if="user.type && user.type == 1"
@@ -46,6 +50,13 @@
 					>
 						<i class="el-icon-menu"></i>
 						<span slot="title">成绩管理</span>
+					</el-menu-item>
+					<el-menu-item
+						index="/coursetable"
+						v-if="user.type && user.type == 2"
+					>
+						<i class="el-icon-document"></i>
+						<span slot="title">课程查询</span>
 					</el-menu-item>
 					<el-menu-item
 						index="/coursemark"
@@ -117,7 +128,6 @@ export default {
 	},
 	computed: {
 		user() {
-			console.log(this.$store.state.user);
 			return this.$store.state.user;
 		}
 	},
@@ -132,15 +142,17 @@ export default {
 			console.log(key, keyPath);
 		},
 		logout() {
-      let self = this;
-			this.Logout(function(data) {
-				if (data) {
+			let self = this;
+			this.Post("user/logout",{},function(data){
+				if (data.success) {
 					self.$store.state.user = {
 						username: "",
 						isLogin: false,
 						type: 0
-          };
-          self.$router.push({ path: "/" });
+					};
+					if (self.$router.currentRoute.fullPath!="/") {
+						self.$router.push({ path: "/" });
+					}
 				}
 			});
 		}

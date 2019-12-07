@@ -15,34 +15,35 @@ public class UserService {
 	public Result login(String username,String password,HttpSession session) {
 		return uDao.login(username,password,session);
 	}
-	public Result getInfo(JSONObject data) {
+	public Result getInfo(String id,int type,JSONObject data) {
 		User u = (User)JSONObject.toJavaObject(data, User.class);
-		if (u.getUsername().isEmpty()) {
+		if (id.isEmpty()) {
 			return Result.bad("获取id失败");
 		}
-		if (!(u.getType()==1||u.getType()==2)) {
+		if (!(type==1||type==2)) {
 			return Result.bad("获取身份失败");
 		}
-		return uDao.getInfo(u.getType(),u.getUsername());
+		return uDao.getInfo(type,id);
 	}
-	public Result updateInfo(JSONObject data) {
+	public Result updateInfo(String id,int type,JSONObject data) {
 		User u = (User)JSONObject.toJavaObject(data, User.class);
-		if (u.getUsername().isEmpty()) {
+		if (id.isEmpty()) {
 			return Result.bad("获取id失败");
 		}
-		if (!(u.getType()==1||u.getType()==2)) {
+		if (!(type==1||type==2)) {
 			return Result.bad("获取身份失败");
 		}
-		return uDao.updateInfo(u.getType(),data);
+		return uDao.updateInfo(type,data);
 	}
 	public Result password(String id,int type,JSONObject data) {
 		User u = (User)JSONObject.toJavaObject(data, User.class);
-		if (u.getUsername().isEmpty()) {
+		System.out.println(id);
+		if (id==null) {
 			return Result.bad("获取id失败");
 		}
-		if (!(u.getType()==1||u.getType()==2)) {
+		if (!(type==1||type==2)) {
 			return Result.bad("获取身份失败");
 		}
-		return uDao.updateInfo(type,id,u.getOldPassword(),u.getPassword());
+		return uDao.password(type,id,u.getPassword(),u.getOldPassword());
 	}
 }

@@ -8,6 +8,8 @@ export default new Vuex.Store({
     user:{
       isLogin:false,
       type:0,
+      nickname:"未登录",
+      username:"",
       name:"未登录"
     }
   },

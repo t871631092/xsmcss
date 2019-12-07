@@ -39,16 +39,16 @@ new Vue({
 	render: h => h(App),
 	beforeCreate: function() {
 		let self = this;
-		this.getLogin(function(data) {
-      if(data){
-        self.$store.state.user = {
-          username: data.username,
-          isLogin: data.isLogin,
-          type: data.type
-        };
-      }else{
-        self.$router.push({ path: "/" });
-      }
+		this.Get("user/isLogin",{},function(data){
+			if(data.success){
+				const d = data.data;
+				self.$store.state.user = {
+					username: d.username,
+					isLogin: d.isLogin,
+					type: d.type
+				};
+			}
 		});
+		
 	}
 }).$mount("#app");

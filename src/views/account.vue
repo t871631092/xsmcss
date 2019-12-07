@@ -5,25 +5,28 @@
 			<el-row type="flex" :gutter="10" justify="center">
 				<el-col :md="8">
 					<el-form ref="form" :model="form" label-width="80px">
-						<el-form-item label="姓名">
+						<el-form-item label="姓名" v-if="user.type == 1">
+							<el-input v-model="form.student_name"></el-input>
+						</el-form-item>
+						<el-form-item label="姓名" v-if="user.type != 1">
 							<el-input v-model="form.name"></el-input>
 						</el-form-item>
 						<el-form-item label="专业" v-if="user.type == 1">
-							<el-input v-model="form.name"></el-input>
+							<el-input v-model="form.student_major"></el-input>
 						</el-form-item>
 						<el-form-item label="级别" v-if="user.type == 2">
-							<el-input v-model="form.name"></el-input>
+							<el-input v-model="form.grade"></el-input>
 						</el-form-item>
 						<el-form-item label="类型" v-if="user.type == 2">
-							<el-input v-model="form.name"></el-input>
+							<el-input v-model="form.category"></el-input>
 						</el-form-item>
 						<el-form-item label="系部" v-if="user.type == 2">
-							<el-input v-model="form.name"></el-input>
+							<el-input v-model="form.department"></el-input>
 						</el-form-item>
-						<el-form-item label="个人描述">
+						<el-form-item label="个人描述" v-if="user.type == 1">
 							<el-input
 								type="textarea"
-								v-model="form.desc"
+								v-model="form.student_description"
 							></el-input>
 						</el-form-item>
 						<el-form-item>
@@ -58,8 +61,8 @@
 								autocomplete="off"
 							></el-input>
 						</el-form-item>
-						<el-form-item label="旧密码" prop="pass">
-							<el-input v-model="ruleForm.checkOldpass"></el-input>
+						<el-form-item label="旧密码" prop="oldpass">
+							<el-input v-model="ruleForm.oldpass"></el-input>
 						</el-form-item>
 						<el-form-item>
 							<el-button
@@ -84,7 +87,9 @@ export default {
 		var checkOldpass = (rule, value, callback) => {
 			if (value === "") {
 				callback(new Error("请输入密码"));
-			} 
+			} else {
+				callback();
+			}
 		};
 		var validatePass = (rule, value, callback) => {
 			if (value === "") {
@@ -108,13 +113,11 @@ export default {
 		return {
 			form: {
 				name: "",
-				region: "",
-				date1: "",
-				date2: "",
-				delivery: false,
-				type: [],
-				resource: "",
-				desc: ""
+				major: "",
+				grade: "",
+				category: "",
+				department: "",
+				description: ""
 			},
 			ruleForm: {
 				pass: "",
@@ -127,33 +130,65 @@ export default {
 				oldpass: [{ validator: checkOldpass, trigger: "blur" }]
 			}
 		};
-    },
-  computed:{
+	},
+	computed: {
 		user() {
 			return this.$store.state.user;
 		}
-  },
+	},
+	mounted() {
+		this.getData();
+	},
 	methods: {
 		onSubmit() {
-			console.log("submit!");
+			let self = this;
+			this.Post("user/info", self.form, function(data) {
+				if (data.success) {
+					alert("修改成功");
+					self.form = data.data[0];
+				} else {
+					alert("修改失败：" + data.msg);
+				}
+			});
 		},
 		submitForm(formName) {
+			let self = this;
 			this.$refs[formName].validate(valid => {
 				if (valid) {
-					alert("submit!");
+					self.Post(
+						"user/password",
+						{
+							password: self.ruleForm.pass,
+							oldPassword: self.ruleForm.oldpass
+						},
+						function(data) {
+							if (data.success) {
+								alert("修改成功");
+							} else {
+								alert("失败：" + data.msg);
+							}
+						}
+					);
 				} else {
-					console.log("error submit!!");
 					return false;
 				}
 			});
 		},
 		resetForm(formName) {
 			this.$refs[formName].resetFields();
+		},
+		getData() {
+			let self = this;
+			this.Get("user/info", {}, function(data) {
+				if (data.success) {
+					self.form = data.data[0];
+				} else {
+					alert("失败：" + data.msg);
+				}
+			});
 		}
 	}
 };
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

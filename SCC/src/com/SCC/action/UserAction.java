@@ -44,8 +44,8 @@ public class UserAction extends BaseAction {
 		}else {
 			User user = new User();
 			user.setIsLogin(true);
-			user.setUsername((String)session.getAttribute("username"));
-			user.setNickname((String)session.getAttribute("nickname"));
+			user.setUsername((String)session.getAttribute("id"));
+			user.setNickname((String)session.getAttribute("name"));
 			user.setType((int)session.getAttribute("type"));
 			Result result = new Result();
 			result.setSuccess(true);
@@ -66,8 +66,8 @@ public class UserAction extends BaseAction {
 	}
 	/* ×¢Ïú */
 	public String logout() {
-		this.session.removeAttribute("username");
-		this.session.removeAttribute("nickname");
+		this.session.removeAttribute("name");
+		this.session.removeAttribute("id");
 		this.session.removeAttribute("isLogin");
 		this.session.removeAttribute("type");
 		User user = new User();
@@ -82,17 +82,21 @@ public class UserAction extends BaseAction {
 	public String info() throws IOException {
 		String method = this.request.getMethod();
 		JSONObject data = this.getRequestPostData(request);
+		String idString = (String)this.request.getSession().getAttribute("id");
+		int type = (int)this.request.getSession().getAttribute("type");
 		if (method.equals("GET")) {
-			setResult(uService.getInfo(data));
+			setResult(uService.getInfo(idString,type,data));
 		} else if(method.equals("POST")) {
-			setResult(uService.updateInfo(data));
+			setResult(uService.updateInfo(idString,type,data));
 		}
 		return Action.SUCCESS;
 	}
 	/* ÐÞ¸ÄÃÜÂë*/	
 	public String password() throws IOException {
 		JSONObject data = this.getRequestPostData(request);
-		setResult(uService.password((String)session.getAttribute("username"),(int)session.getAttribute("type"),data));
+		String idString = (String)this.request.getSession().getAttribute("id");
+		int type = (int)this.request.getSession().getAttribute("type");
+		setResult(uService.password(idString,type,data));
 		return Action.SUCCESS;
 	}
 }

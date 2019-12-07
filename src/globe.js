@@ -1,18 +1,16 @@
 exports.install = function(Vue) {
 	Vue.prototype.getLogin = function(callback) {
 		//全局函数1
-        this.axios.post('user/isLogin',null,)
+        this.axios.post('user/isLogin',null)
         .then(function(req){
             const data = req.data;
-            console.log(data);
-            if(data.success){
+            if(req){
                 callback(data.data);
             }else{
-                callback(data.success);
+                alert("wrong");
             }
         })
         .catch(function(error) {
-            console.log(error);
         });
     };
 	Vue.prototype.Logout = function(callback) {
@@ -20,15 +18,13 @@ exports.install = function(Vue) {
         this.axios.post('user/logout',null,)
         .then(function(req){
             const data = req.data;
-            console.log(data.success);
             if(data.success){
-                callback(data.success);
+                callback(data);
             }else{
-                callback(data.success);
+                alert("wrong");
             }
         })
         .catch(function(error) {
-            console.log(error);
         });
 	};
 	Vue.prototype.Post = function(url,data,callback) {
@@ -38,11 +34,10 @@ exports.install = function(Vue) {
             if(req.status==200){
                 callback(req.data);
             }else{
-                alert("wrong")
+                alert("wrong");
             }
         })
         .catch(function(error) {
-            console.log(error);
         });
     };
     Vue.prototype.Get = function(url,params,callback) {
@@ -52,11 +47,10 @@ exports.install = function(Vue) {
             if(req.status==200){
                 callback(req.data);
             }else{
-                alert("wrong")
+                alert("wrong");
             }
         })
         .catch(function(error) {
-            console.log(error);
         });
     };
     Vue.prototype.Delete = function(url,data,callback) {
@@ -70,7 +64,10 @@ exports.install = function(Vue) {
             }
         })
         .catch(function(error) {
-            console.log(error);
         });
     };
+    Vue.prototype.Clone =function(data){
+        //全局函数5
+        return JSON.parse(JSON.stringify(data));
+    }
 };

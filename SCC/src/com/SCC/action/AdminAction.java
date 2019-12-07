@@ -28,7 +28,7 @@ public class AdminAction extends BaseAction {
 	public void setResult(Result result) {
 		this.result = result;
 	}
-	/* 学生 */
+	/* 学生  前端参数要改*/
 	public String student() throws IOException {
 		String method = this.request.getMethod();
 		JSONObject data = this.getRequestPostData(request);
@@ -46,7 +46,7 @@ public class AdminAction extends BaseAction {
 		return Action.SUCCESS;
 		
 	}
-	/* 教师 */
+	/* 教师 前端参数要改 */
 	public String teacher() throws IOException {
 		String method = this.request.getMethod();
 		JSONObject data = this.getRequestPostData(request);
@@ -63,7 +63,7 @@ public class AdminAction extends BaseAction {
 		}
 		return Action.SUCCESS;
 	}
-	/* 课程 */
+	/* 课程 前端参数要改*/ 
 	public String course() throws IOException {
 		String method = this.request.getMethod();
 		JSONObject data = this.getRequestPostData(request);

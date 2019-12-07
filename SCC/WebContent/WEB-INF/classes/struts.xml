@@ -9,9 +9,11 @@
 		value="/static/.*?" />
 	<constant name="struts.devMode" value="true" />
 	<!-- 用户 USER API -->
-	<package name="user" extends="struts-default,json-default" namespace="/user">
+	<package name="user" extends="struts-default,json-default"
+		namespace="/user">
 		<interceptors>
-			<interceptor name="myOptions" class="xsm520.interceptor.optionInterceptor"></interceptor>
+			<interceptor name="myOptions"
+				class="xsm520.interceptor.optionInterceptor"></interceptor>
 			<interceptor-stack name="myStack">
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 				<interceptor-ref name="myOptions"></interceptor-ref>
@@ -19,8 +21,10 @@
 		</interceptors>
 		<default-interceptor-ref name="myStack" />
 		<!-- 登陆 -->
-		<action name="login" class="com.SCC.action.UserAction" method="login">
+		<action name="login" class="com.SCC.action.UserAction"
+			method="login">
 			<result name="success" type="json">
+				<param name="excludeNullProperties">true</param>
 				<param name="root">result</param>
 			</result>
 			<result name="none" type="json">
@@ -28,7 +32,8 @@
 			</result>
 		</action>
 		<!-- 获取登录信息 -->
-		<action name="isLogin" class="com.SCC.action.UserAction" method="isLogin">
+		<action name="isLogin" class="com.SCC.action.UserAction"
+			method="isLogin">
 			<result name="success" type="json">
 				<param name="root">result</param>
 			</result>
@@ -36,8 +41,9 @@
 				<param name="root">result</param>
 			</result>
 		</action>
-	    <!-- 注销 -->
-		<action name="logout" class="com.SCC.action.UserAction" method="logout">
+		<!-- 注销 -->
+		<action name="logout" class="com.SCC.action.UserAction"
+			method="logout">
 			<result name="success" type="json">
 				<param name="root">result</param>
 			</result>
@@ -45,19 +51,23 @@
 				<param name="root">result</param>
 			</result>
 		</action>
-	    <!-- 个人资料 get post-->
-		<action name="info" class="com.SCC.action.UserAction" method="info">
+		<!-- 个人资料 get post -->
+		<action name="info" class="com.SCC.action.UserAction"
+			method="info">
 			<result name="success" type="json">
 				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
 			</result>
 			<result name="none" type="json">
 				<param name="root">result</param>
 			</result>
 		</action>
-	    <!-- 修改密码post -->
-		<action name="password" class="com.SCC.action.UserAction" method="password">
+		<!-- 修改密码post -->
+		<action name="password" class="com.SCC.action.UserAction"
+			method="password">
 			<result name="success" type="json">
 				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
 			</result>
 			<result name="none" type="json">
 				<param name="root">result</param>
@@ -65,55 +75,78 @@
 		</action>
 	</package>
 	<!-- 课程 Course API -->
-	<package name="course" extends="struts-default,json-default" namespace="/course">
+	<package name="course" extends="struts-default,json-default"
+		namespace="/course">
 		<interceptors>
-			<interceptor name="myOptions" class="xsm520.interceptor.optionInterceptor"></interceptor>
+			<interceptor name="myOptions"
+				class="xsm520.interceptor.optionInterceptor"></interceptor>
 			<interceptor-stack name="myStack">
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 				<interceptor-ref name="myOptions"></interceptor-ref>
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="myStack" />
-		<!-- 选课列表 get-->
-		<action name="query" class="com.SCC.action.CourseAction" method="query">
+		<!-- 选课列表 get -->
+		<action name="query" class="com.SCC.action.CourseAction"
+			method="query">
 			<result name="success" type="json">
 				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
 			</result>
 			<result name="none" type="json">
 				<param name="root">result</param>
 			</result>
 		</action>
-		<!-- 选择课程 post-->
-		<action name="select" class="com.SCC.action.CourseAction" method="select">
+		<!-- 选择课程 post,delete -->
+		<action name="select" class="com.SCC.action.CourseAction"
+			method="select">
 			<result name="success" type="json">
 				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
 			</result>
 			<result name="none" type="json">
 				<param name="root">result</param>
 			</result>
 		</action>
-		<!-- 课程成绩 get-->
-		<action name="score" class="com.SCC.action.CourseAction" method="score">
+		<!-- 选择课程 post -->
+		<action name="comfirm" class="com.SCC.action.CourseAction"
+			method="comfirm">
 			<result name="success" type="json">
 				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
 			</result>
 			<result name="none" type="json">
 				<param name="root">result</param>
 			</result>
 		</action>
-		<!-- 课程学生列表 get-->
-		<action name="list" class="com.SCC.action.CourseAction" method="list">
+		<!-- 课程成绩 get -->
+		<action name="score" class="com.SCC.action.CourseAction"
+			method="score">
 			<result name="success" type="json">
 				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
 			</result>
 			<result name="none" type="json">
 				<param name="root">result</param>
 			</result>
 		</action>
-		<!-- 录入学生成绩 post-->
-		<action name="addscore" class="com.SCC.action.CourseAction" method="addscore">
+		<!-- 课程学生列表 get -->
+		<action name="list" class="com.SCC.action.CourseAction"
+			method="list">
 			<result name="success" type="json">
 				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			<result name="none" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 录入学生成绩 post -->
+		<action name="addscore" class="com.SCC.action.CourseAction"
+			method="addscore">
+			<result name="success" type="json">
+				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
 			</result>
 			<result name="none" type="json">
 				<param name="root">result</param>
@@ -121,9 +154,11 @@
 		</action>
 	</package>
 	<!-- 管理 Manage API get post delete -->
-	<package name="admin" extends="struts-default,json-default" namespace="/admin">
+	<package name="admin" extends="struts-default,json-default"
+		namespace="/admin">
 		<interceptors>
-			<interceptor name="myOptions" class="xsm520.interceptor.optionInterceptor"></interceptor>
+			<interceptor name="myOptions"
+				class="xsm520.interceptor.optionInterceptor"></interceptor>
 			<interceptor-stack name="myStack">
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 				<interceptor-ref name="myOptions"></interceptor-ref>
@@ -131,27 +166,33 @@
 		</interceptors>
 		<default-interceptor-ref name="myStack" />
 		<!-- 学生 -->
-		<action name="student" class="com.SCC.action.AdminAction" method="student">
+		<action name="student" class="com.SCC.action.AdminAction"
+			method="student">
 			<result name="success" type="json">
 				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
 			</result>
 			<result name="none" type="json">
 				<param name="root">result</param>
 			</result>
 		</action>
 		<!-- 教师 -->
-		<action name="teacher" class="com.SCC.action.AdminAction" method="teacher">
+		<action name="teacher" class="com.SCC.action.AdminAction"
+			method="teacher">
 			<result name="success" type="json">
 				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
 			</result>
 			<result name="none" type="json">
 				<param name="root">result</param>
 			</result>
 		</action>
 		<!-- 课程 -->
-		<action name="course" class="com.SCC.action.AdminAction" method="course">
+		<action name="course" class="com.SCC.action.AdminAction"
+			method="course">
 			<result name="success" type="json">
 				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
 			</result>
 			<result name="none" type="json">
 				<param name="root">result</param>
