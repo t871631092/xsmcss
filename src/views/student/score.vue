@@ -6,7 +6,6 @@
 				ref="singleTable"
 				:data="tableData"
 				highlight-current-row
-				@current-change="handleCurrentChange"
 				height="85%"
 				style="width: 100%;"
 			>

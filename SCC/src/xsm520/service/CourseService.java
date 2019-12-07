@@ -26,7 +26,19 @@ public class CourseService {
 	public Result listC(String uid,Page p) {
 		return cDAO.listC(uid,p);
 	}
-	public Result mark(String cid, String sid, int score) {
-		return cDAO.mark(cid,sid,score);
+	public Result mark(String cid, String sid, int score,String tid) {
+		return cDAO.mark(cid,sid,score,tid);
+	}
+	public Result stuDep() {
+		return cDAO.studentDep();
+	}
+	public Result couCate() {
+		return cDAO.couCate();
+	}
+	public Result stuDepAdv() {
+		return cDAO.studentDepAdv();
+	}
+	public Result couCateAdv() {
+		return cDAO.couCateAdv();
 	}
 }

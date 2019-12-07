@@ -20,7 +20,7 @@ Vue.use(ElementUI);
 Vue.prototype.axios = axios;
 Vue.use(globe);
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:8080/SCC/";
+//axios.defaults.baseURL = "http://localhost:8080/SCC/";
 
 router.beforeEach((to, from, next) => {
 	if (
@@ -44,6 +44,7 @@ new Vue({
 				const d = data.data;
 				self.$store.state.user = {
 					username: d.username,
+					nickname:d.nickname,
 					isLogin: d.isLogin,
 					type: d.type
 				};

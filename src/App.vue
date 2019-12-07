@@ -34,7 +34,7 @@
 						></i>
 					</el-menu-item>
 					<el-menu-item index="/">
-						<i class="el-icon-menu"></i>
+						<i class="el-icon-s-home"></i>
 						<span slot="title">首页</span>
 					</el-menu-item>
 					<el-menu-item
@@ -42,14 +42,14 @@
 						v-if="user.type && user.type == 1"
 					>
 						<i class="el-icon-menu"></i>
-						<span slot="title">选课管理</span>
+						<span slot="title">选课信息</span>
 					</el-menu-item>
 					<el-menu-item
 						index="/student/score"
 						v-if="user.type && user.type == 1"
 					>
-						<i class="el-icon-menu"></i>
-						<span slot="title">成绩管理</span>
+						<i class="el-icon-s-order"></i>
+						<span slot="title">成绩查询</span>
 					</el-menu-item>
 					<el-menu-item
 						index="/coursetable"
@@ -62,14 +62,14 @@
 						index="/coursemark"
 						v-if="user.type && user.type == 2"
 					>
-						<i class="el-icon-document"></i>
+						<i class="el-icon-s-claim"></i>
 						<span slot="title">学生评分</span>
 					</el-menu-item>
 					<el-menu-item
 						index="/account"
 						v-if="user.type && user.type != 3"
 					>
-						<i class="el-icon-setting"></i>
+						<i class="el-icon-user-solid"></i>
 						<span slot="title">个人信息</span>
 					</el-menu-item>
 					<el-menu-item

@@ -70,7 +70,11 @@ public class AdminAction extends BaseAction {
 		coures c = (coures)JSONObject.toJavaObject(data, coures.class);
 		Page p = Page.fromReq(request);
 		if (method.equals("GET")) {
-			setResult(aService.getCourse(p));
+			if (request.getParameter("period")!=null) {
+				setResult(aService.getCourse(p,(String)request.getParameter("period")));
+			}else {
+				setResult(aService.getCourse(p));
+			}
 		} else if(method.equals("POST")) {
 			setResult(aService.insCourse(c));
 		} else if(method.equals("PUT")) {

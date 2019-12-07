@@ -12,6 +12,7 @@ public class student {
 	private String student_major;
 	private String student_description;
 	private int score;
+	private Long avgScore;
 
 	public boolean unVali() {
 		if (this.student_id.isEmpty()||this.student_password.isEmpty()||this.student_name.isEmpty()) {
@@ -75,5 +76,13 @@ public class student {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public Long getAvgScore() {
+		return avgScore;
+	}
+
+	public void setAvgScore(Long avgScore) {
+		this.avgScore = avgScore;
 	}
 }

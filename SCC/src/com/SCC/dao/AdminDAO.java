@@ -1,6 +1,7 @@
 package com.SCC.dao;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.SCC.model.Page;
@@ -244,7 +245,9 @@ public class AdminDAO {
 	public Result getCourse(Page p) {
 		Result result = new Result();
 		try {
-			sql = "select c.*,t.name as teacher_name from coures c left join teacher t on c.teacher_id = t.id LIMIT ?,? ;";
+			sql = "SELECT c.*,t.name as teacher_name, CAST(ROUND(avg(e.score),0) AS signed) as avgScore  from coures c "
+					+ "left join teacher t on c.teacher_id = t.id left join elective e on c.coures_id = e.coures_id GROUP BY c.coures_id" + 
+					" LIMIT ?,? ;";
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql,p.getRow(),p.getSize());
 			List dataList = Dbutil.populate(ret, coures.class);
@@ -260,6 +263,29 @@ public class AdminDAO {
 		return result;
 	}
 
+	// 获取课程 有参数
+	public Result getCourse(Page p,String period) {
+		Result result = new Result();
+		try {
+			sql = "SELECT c.*,t.name as teacher_name, CAST(ROUND(avg(e.score),0) AS signed) as avgScore  from coures c "
+					+ "left join teacher t on c.teacher_id = t.id left join elective e on c.coures_id = e.coures_id "
+					+" where c.period "+period
+					+ " GROUP BY c.coures_id" + 
+					" LIMIT ?,? ;";
+			db = new Dbutil();
+			ResultSet ret = db.executeQuery(sql,p.getRow(),p.getSize());
+			List dataList = Dbutil.populate(ret, coures.class);
+			result.setCount(count("coures"));
+			result.setData(dataList);
+			result.setSuccess(true);
+			System.out.println("Coures表 获取数据(条): " + dataList.size());
+		} catch (Exception e) {
+			System.out.println("错误" + e.toString());
+			result.setSuccess(false);
+			result.setMsg(e.toString());
+		}
+		return result;
+	}
 	public Result insCourse(coures c) {
 		// 检查输入
 		if (c.unVali()) {

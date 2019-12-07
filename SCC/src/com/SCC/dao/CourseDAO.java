@@ -26,6 +26,7 @@ public class CourseDAO {
 			ResultSet ret = db.executeQuery(sql, id, p.getRow(), p.getSize());
 			List dataList = Dbutil.populate(ret, coures.class);
 			System.out.println("elective 获取数据(条): " + dataList.size());
+			db.close();
 			return Result.ok(dataList, count("elective","student_id", id), "");
 		} catch (Exception e) {
 			System.out.println("错误" + e.toString());
@@ -196,24 +197,24 @@ public class CourseDAO {
 
 	// 通过课程id 获取学生选课记录
 	public Result listC(String cid, Page p) {
-		// 查询学生选课记录是否存在
-		try {
-			sql = "select count(*) from elective where coures_id = ? and e.status =1 ;";
-			db = new Dbutil();
-			ResultSet ret = db.executeQuery(sql, cid);
-			ret.next();
-			if (ret.getInt(1) == 0) {
-				db.close();
-				return Result.bad("没有该课程");
-			}
-			db.close();
-		} catch (Exception e) {
-			System.out.println("错误" + e.toString());
-			Result.bad("错误" + e.toString());
-		}
+//		// 查询学生选课记录是否存在
+//		try {
+//			sql = "select count(*) from elective where coures_id = ? and status =1 ;";
+//			db = new Dbutil();
+//			ResultSet ret = db.executeQuery(sql, cid);
+//			ret.next();
+//			if (ret.getInt(1) == 0) {
+//				db.close();
+//				return Result.bad("没有该课程");
+//			}
+//			db.close();
+//		} catch (Exception e) {
+//			System.out.println("错误" + e.toString());
+//			return Result.bad("错误" + e.toString());
+//		}
 		// 获取课程
 		try {
-			sql = "select e.score,s.* from elective e left join student s on e.student_id=s.student_id where e.coures_id = ? and e.status =1 limit ?,? ;";
+			sql = "select e.score,s.* from elective e left join student s on e.student_id=s.student_id where e.coures_id = ? and e.status = 1  limit ?,? ;";
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql, cid, p.getRow(), p.getSize());
 			List dataList = Dbutil.populate(ret, student.class);
@@ -226,12 +227,12 @@ public class CourseDAO {
 		}
 	}
 	// 录入成绩
-	public Result mark(String cid, String sid, int score) {
+	public Result mark(String cid, String sid, int score,String tid) {
 		// 
 		try {
-			sql = " update elective set score = ?  where student_id = ? and coures_id = ?;";
+			sql = " update elective set score = ?,teacher_id = ?  where student_id = ? and coures_id = ?;";
 			db = new Dbutil();
-			int ret = db.executeUpdate(sql, score, sid, cid);
+			int ret = db.executeUpdate(sql, score,tid, sid, cid);
 			if (ret == 1) {
 				db.close();
 				return Result.ok(null, 0, "修改成功");
@@ -299,5 +300,76 @@ public class CourseDAO {
 			return 0;
 		}
 		return 0;
+	}
+	// 查询专业
+	public Result studentDep() {
+		// 用学生类算了 ~~懒
+		try {
+			sql = "select student_major from student group by student_major;";
+			db = new Dbutil();
+			ResultSet ret = db.executeQuery(sql);
+			List dataList = Dbutil.populate(ret, student.class);
+			System.out.println("student表 获取数据(条): " + dataList.size());
+			db.close();
+			return Result.ok(dataList, dataList.size(), "获取成功");
+		} catch (Exception e) {
+			System.out.println("错误" + e.toString());
+			return Result.bad("错误" + e.toString());
+		}
+	}
+	// 查询课程分类
+	public Result couCate() {
+		// 用学生类算了 ~~懒
+		try {
+			sql = "select category from coures group by category;";
+			db = new Dbutil();
+			ResultSet ret = db.executeQuery(sql);
+			List dataList = Dbutil.populate(ret, coures.class);
+			System.out.println("coures表 获取数据(条): " + dataList.size());
+			db.close();
+			return Result.ok(dataList, dataList.size(), "获取成功");
+		} catch (Exception e) {
+			System.out.println("错误" + e.toString());
+			return Result.bad("错误" + e.toString());
+		}
+	}
+	// 查询专业 自定义查询 学生信息中超过平均人数的专业
+	public Result studentDepAdv() {
+		// 用学生类算了 ~~懒
+		try {
+			sql = "SELECT D.* FROM ( SELECT  CAST(ROUND(avg(C.mgco),0) AS signed) as avgScore,C.student_major FROM( "
+					+ "SELECT COUNT(student_id) AS mgco,student_major FROM student GROUP BY student_major ) AS C GROUP BY C.student_major ) AS D "
+					+ "WHERE D.avgScore>(select count(student_id)/count(distinct student_major) from student) ;";
+			db = new Dbutil();
+			ResultSet ret = db.executeQuery(sql);
+			List dataList = Dbutil.populate(ret, student.class);
+			System.out.println("student表 获取数据(条): " + dataList.size());
+			db.close();
+			return Result.ok(dataList, dataList.size(), "获取成功");
+		} catch (Exception e) {
+			System.out.println("错误" + e.toString());
+			return Result.bad("错误" + e.toString());
+		}
+	}
+	// 查询课程分类  自定义查询 		○ 平均课程容纳人数最大最小类别
+
+	public Result couCateAdv() {
+		// 用课程类算了 ~~懒
+		try {
+			sql = "SELECT MAX(A.a) as avgScore,A.* FROM(SELECT " + 
+					" CAST(ROUND(avg(capacity),0) AS signed) as a,coures.* FROM coures GROUP BY category) AS A " + 
+					"UNION " + 
+					"SELECT MIN(A.a) as avgScore,A.* FROM(SELECT  " + 
+					" CAST(ROUND(avg(capacity),0) AS signed) as a,coures.* FROM coures GROUP BY category) AS A ;";
+			db = new Dbutil();
+			ResultSet ret = db.executeQuery(sql);
+			List dataList = Dbutil.populate(ret, coures.class);
+			System.out.println("coures表 获取数据(条): " + dataList.size());
+			db.close();
+			return Result.ok(dataList, dataList.size(), "获取成功");
+		} catch (Exception e) {
+			System.out.println("错误" + e.toString());
+			return Result.bad("错误" + e.toString());
+		}
 	}
 }

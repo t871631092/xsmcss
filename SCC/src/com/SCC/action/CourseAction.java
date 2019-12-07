@@ -71,9 +71,31 @@ public class CourseAction  extends BaseAction {
 		String cid = data.getString("course_id");
 		int score = data.getInteger("score");
 		String sid = data.getString("student_id");
-		setResult(cService.mark(cid, sid, score));
+		setResult(cService.mark(cid, sid, score,(String)session.getAttribute("id")));
 		return Action.SUCCESS;
 	}
+	/* 获取学生专业 */
+	public String studep() throws IOException {
+		CourseService cService = new CourseService();	
+		if (request.getParameter("adv")!=null) {
+			setResult(cService.stuDepAdv());
+		}else {
+			setResult(cService.stuDep());
+		}
+		return Action.SUCCESS;
+	}
+
+	/* 获取课程分类 */
+	public String couCate() throws IOException {
+		CourseService cService = new CourseService();	
+		if (request.getParameter("adv")!=null) {
+			setResult(cService.couCateAdv());
+		}else {
+			setResult(cService.couCate());
+		}
+		return Action.SUCCESS;
+	}
+	
 }
 /**
  * Write by Xie

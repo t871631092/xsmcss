@@ -15,7 +15,7 @@ public class coures {
 	private int score;
 	private String score_teacher;
 	private int status;
-	
+	private Long avgScore;
 	public boolean unVali() {
 		if (this.name.isEmpty()||this.teacher_id.isEmpty()||this.capacity==0) {
 			return true;
@@ -118,6 +118,14 @@ public class coures {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public Long getAvgScore() {
+		return avgScore;
+	}
+
+	public void setAvgScore(Long avgScore) {
+		this.avgScore = avgScore;
 	}
 
 	

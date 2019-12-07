@@ -51,6 +51,45 @@
 					<p>专业:{{ data.student_major }}</p>
 					<p>已修学分:{{ data.electives_credits }}</p>
 				</div>
+				<div v-if="user.type == 2" style="margin-top:100px">
+					<div class="row">
+						<div class="col-md-6">
+							<el-divider content-position="left"
+								><h4>平均课程容纳人数最大最小类别</h4></el-divider
+							>
+							<el-table
+								ref="singleTable"
+								:data="tdata2"
+								highlight-current-row
+								height="80%"
+								style="width: 100%;"
+							>
+								<el-table-column property="category" label="类别">
+								</el-table-column>
+								<el-table-column property="avgScore" label="平均容纳人数">
+								</el-table-column>
+							</el-table>
+						</div>
+						<div class="col-md-6">
+							<el-divider content-position="left"
+								><h4>学生信息中超过平均人数的专业</h4></el-divider
+							>
+							<el-table
+								ref="singleTable"
+								:data="tdata1"
+								highlight-current-row
+								height="80%"
+								style="width: 100%"
+							>
+								<el-table-column property="student_major" label="专业">
+								</el-table-column>
+								<el-table-column property="avgScore" label="平均人数">
+								</el-table-column>
+								
+							</el-table>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -63,7 +102,9 @@ export default {
 				name: "",
 				pass: ""
 			},
-			data: {}
+			data: {},
+			tdata1:[],
+			tdata2:[]
 		};
 	},
 	computed: {
@@ -84,9 +125,22 @@ export default {
 		getInfo() {
 			let self = this;
 			if (self.user.type == 1) {
-				this.Get("user/info", {}, function(data) {
+				this.Get("user/info", {adv : true}, function(data) {
 					if (data.success) {
 						self.data = data.data[0];
+					}
+				});
+			}
+			if (self.user.type == 2) {
+				
+				this.Get("course/studep", { adv : true}, function(data) {
+					if (data.success) {
+						self.tdata1 = data.data;
+					}
+				});
+				this.Get("course/couCate", { adv : true}, function(data) {
+					if (data.success) {
+						self.tdata2 = data.data;
 					}
 				});
 			}

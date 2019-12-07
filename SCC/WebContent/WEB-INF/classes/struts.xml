@@ -8,21 +8,63 @@
 	<constant name="struts.action.excludePattern"
 		value="/static/.*?" />
 	<constant name="struts.devMode" value="true" />
-	<!-- 用户 USER API -->
-	<package name="user" extends="struts-default,json-default"
-		namespace="/user">
+
+	<!-- 全局拦截器 -->
+	<package name="default" extends="struts-default,json-default"
+		abstract="true" namespace="/">
+		<!-- 拦截器定义 -->
 		<interceptors>
 			<interceptor name="myOptions"
 				class="xsm520.interceptor.optionInterceptor"></interceptor>
+			<interceptor name="myIslogin"
+				class="xsm520.interceptor.isloginInterceptor">
+				<param name="excludeMethods">isLogin</param>
+				<param name="excludeMethods">login</param>
+			</interceptor>
 			<interceptor-stack name="myStack">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="myOptions"></interceptor-ref>
+				<interceptor-ref name="myIslogin"></interceptor-ref>
+			</interceptor-stack>
+			<interceptor-stack name="myStack2">
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 				<interceptor-ref name="myOptions"></interceptor-ref>
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="myStack" />
+		<!-- 配置默认Action（当其他Action不能匹配的时候自动匹配此Action -->
+		<default-action-ref name="defaultAction" />
+		<!-- 定义全局视图 -->
+		<global-results>
+			<result name="index">static/index.html</result>
+			<result name="noLogin" type="redirect">/error/noLogin</result>
+		</global-results>
+		<!-- 定义默认Action -->
+
+		<action class="com.SCC.action.DefaultAction"
+			name="defaultAction" method="noLogin">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+	<!-- 全局错误返回Action -->
+	<package name="error" extends="default" namespace="/error">
+		<action class="com.SCC.action.DefaultAction" name="noLogin"
+			method="noLogin">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+	<!-- 用户 USER API 继承全局包default 实现全局拦截 -->
+	<package name="user" extends="default"
+		namespace="/user">
+		<!-- 设置例外 登陆接口不拦截 -->
 		<!-- 登陆 -->
 		<action name="login" class="com.SCC.action.UserAction"
 			method="login">
+			<interceptor-ref name="myStack2"></interceptor-ref>
 			<result name="success" type="json">
 				<param name="excludeNullProperties">true</param>
 				<param name="root">result</param>
@@ -34,6 +76,7 @@
 		<!-- 获取登录信息 -->
 		<action name="isLogin" class="com.SCC.action.UserAction"
 			method="isLogin">
+			<interceptor-ref name="myStack2"></interceptor-ref>
 			<result name="success" type="json">
 				<param name="root">result</param>
 			</result>
@@ -44,6 +87,7 @@
 		<!-- 注销 -->
 		<action name="logout" class="com.SCC.action.UserAction"
 			method="logout">
+			<interceptor-ref name="myStack2"></interceptor-ref>
 			<result name="success" type="json">
 				<param name="root">result</param>
 			</result>
@@ -74,18 +118,8 @@
 			</result>
 		</action>
 	</package>
-	<!-- 课程 Course API -->
-	<package name="course" extends="struts-default,json-default"
-		namespace="/course">
-		<interceptors>
-			<interceptor name="myOptions"
-				class="xsm520.interceptor.optionInterceptor"></interceptor>
-			<interceptor-stack name="myStack">
-				<interceptor-ref name="defaultStack"></interceptor-ref>
-				<interceptor-ref name="myOptions"></interceptor-ref>
-			</interceptor-stack>
-		</interceptors>
-		<default-interceptor-ref name="myStack" />
+	<!-- 课程 Course API 继承全局包default 实现全局拦截 -->
+	<package name="course" extends="default" namespace="/course">
 		<!-- 选课列表 get -->
 		<action name="query" class="com.SCC.action.CourseAction"
 			method="query">
@@ -152,19 +186,31 @@
 				<param name="root">result</param>
 			</result>
 		</action>
+		<!-- 获取学生专业 GET -->
+		<action name="studep" class="com.SCC.action.CourseAction"
+			method="studep">
+			<result name="success" type="json">
+				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			<result name="none" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!--获取课程分类 GET -->
+		<action name="couCate" class="com.SCC.action.CourseAction"
+			method="couCate">
+			<result name="success" type="json">
+				<param name="root">result</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			<result name="none" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
 	</package>
-	<!-- 管理 Manage API get post delete -->
-	<package name="admin" extends="struts-default,json-default"
-		namespace="/admin">
-		<interceptors>
-			<interceptor name="myOptions"
-				class="xsm520.interceptor.optionInterceptor"></interceptor>
-			<interceptor-stack name="myStack">
-				<interceptor-ref name="defaultStack"></interceptor-ref>
-				<interceptor-ref name="myOptions"></interceptor-ref>
-			</interceptor-stack>
-		</interceptors>
-		<default-interceptor-ref name="myStack" />
+	<!-- 管理 Manage API get post delete 继承全局包default 实现全局拦截 -->
+	<package name="admin" extends="default" namespace="/admin">
 		<!-- 学生 -->
 		<action name="student" class="com.SCC.action.AdminAction"
 			method="student">

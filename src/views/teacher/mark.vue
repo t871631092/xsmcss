@@ -29,12 +29,12 @@
 					</el-table-column>
 					<el-table-column prop="isSave" label="已保存">
 						<template scope="scope">
-							<span>{{
-								scope.row.isSave == null ||
-								scope.row.isSave == 0
-									? "√"
-									: "X"
-							}}</span>
+							<span>
+								<i class="el-icon-check" v-if="scope.row.isSave == null ||
+								scope.row.isSave == 0"></i>
+								<i class="el-icon-close" v-if="!(scope.row.isSave == null ||
+								scope.row.isSave == 0)"></i>
+								</span>
 						</template>
 					</el-table-column>
 					<el-table-column label="操作" width="150">
