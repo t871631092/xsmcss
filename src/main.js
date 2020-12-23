@@ -15,7 +15,6 @@ import "./assets/main.scss";
 
 Vue.config.productionTip = false;
 
-Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.prototype.axios = axios;
 Vue.use(globe);

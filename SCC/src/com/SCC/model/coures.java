@@ -16,6 +16,7 @@ public class coures {
 	private String score_teacher;
 	private int status;
 	private Long avgScore;
+	private Long unsurplus;
 	public boolean unVali() {
 		if (this.name.isEmpty()||this.teacher_id.isEmpty()||this.capacity==0) {
 			return true;
@@ -128,5 +129,11 @@ public class coures {
 		this.avgScore = avgScore;
 	}
 
+	public void setUnsurplus(Long a){
+		this.unsurplus = a;
+	}
+	public Long getUnsurplus(){
+		return  this.unsurplus;
+	}
 	
 }

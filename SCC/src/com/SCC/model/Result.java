@@ -1,6 +1,5 @@
 package com.SCC.model;
 
-import org.eclipse.jdt.internal.compiler.ast.ThisReference;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;

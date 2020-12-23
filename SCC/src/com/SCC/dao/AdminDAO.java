@@ -49,7 +49,7 @@ public class AdminDAO {
 		}
 		// 检查id重复
 		try {
-			sql = "select count(*) from student where student_id = ? ;";
+			sql = "select count(*) from (select id from teacher union select student_id as id from student union select id from user) a where a.id = ? ;";
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql, s.getStudent_id());
 			if (ret.next()) {
@@ -160,7 +160,7 @@ public class AdminDAO {
 		}
 		// 检查id重复
 		try {
-			sql = "select count(*) from teacher where id = ?;";
+			sql = "select count(*) from (select id from teacher union select student_id as id from student union select id from user) a where a.id = ?;";
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql, t.getId());
 			if (ret.next()) {
@@ -245,8 +245,9 @@ public class AdminDAO {
 	public Result getCourse(Page p) {
 		Result result = new Result();
 		try {
-			sql = "SELECT c.*,t.name as teacher_name, CAST(ROUND(avg(e.score),0) AS signed) as avgScore  from coures c "
-					+ "left join teacher t on c.teacher_id = t.id left join elective e on c.coures_id = e.coures_id GROUP BY c.coures_id" + 
+			sql = "SELECT c.*,t.name as teacher_name, CAST(ROUND(avg(e.score),0) AS signed) as avgScore ,cc.unsurplus from coures c "
+					+ "left join teacher t on c.teacher_id = t.id left join elective e on c.coures_id = e.coures_id " +
+					" left join (select count(*) as unsurplus,coures_id from elective GROUP BY coures_id) cc on cc.coures_id=c.coures_id GROUP BY c.coures_id"+
 					" LIMIT ?,? ;";
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql,p.getRow(),p.getSize());
@@ -263,12 +264,35 @@ public class AdminDAO {
 		return result;
 	}
 
+	// 获取课程
+	public Result getCourse(Page p,String a,String tid) {
+		Result result = new Result();
+		try {
+			sql = "SELECT c.*,t.name as teacher_name, CAST(ROUND(avg(e.score),0) AS signed) as avgScore  from coures c "
+					+ "left join teacher t on c.teacher_id = t.id left join elective e on c.coures_id = e.coures_id " +
+					"where t.id = ? GROUP BY c.coures_id" +
+					" LIMIT ?,? ;";
+			db = new Dbutil();
+			ResultSet ret = db.executeQuery(sql,tid,p.getRow(),p.getSize());
+			List dataList = Dbutil.populate(ret, coures.class);
+			result.setCount(count("coures"));
+			result.setData(dataList);
+			result.setSuccess(true);
+			System.out.println("Coures表 获取数据(条): " + dataList.size());
+		} catch (Exception e) {
+			System.out.println("错误" + e.toString());
+			result.setSuccess(false);
+			result.setMsg(e.toString());
+		}
+		return result;
+	}
 	// 获取课程 有参数
 	public Result getCourse(Page p,String period) {
 		Result result = new Result();
 		try {
-			sql = "SELECT c.*,t.name as teacher_name, CAST(ROUND(avg(e.score),0) AS signed) as avgScore  from coures c "
-					+ "left join teacher t on c.teacher_id = t.id left join elective e on c.coures_id = e.coures_id "
+			sql = "SELECT c.*,t.name as teacher_name, CAST(ROUND(avg(e.score),0) AS signed) as avgScore,cc.unsurplus  from coures c "
+					+ "left join teacher t on c.teacher_id = t.id left join elective e on c.coures_id = e.coures_id "+
+			" left join (select count(*) as unsurplus,coures_id from elective GROUP BY coures_id) cc on cc.coures_id=c.coures_id"
 					+" where c.period "+period
 					+ " GROUP BY c.coures_id" + 
 					" LIMIT ?,? ;";
@@ -330,7 +354,7 @@ public class AdminDAO {
 		} else {
 			//修改
 			try {
-				sql = "UPDATE coures set name =?,teacher_id=?,capacity=?,category=?,period=?,description=? where id = ?";
+				sql = "UPDATE coures set name =?,teacher_id=?,capacity=?,category=?,period=?,description=? where coures_id = ?";
 				db = new Dbutil();
 				int ret = db.executeUpdate(sql, c.getName(), c.getTeacher_id(), c.getCapacity(),c.getCategory(),c.getPeriod(),c.getDescription(),c.getCoures_id());
 				if (ret == 1) {

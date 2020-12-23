@@ -104,14 +104,14 @@ export default {
 		},
 		handleSizeChange(val) {
 			this.size = val;
-			this.getData();
+			this.getCourseData();
 		},
 		handleCurrentChange(val) {
 			this.page = val;
-			this.getData();
+			this.getCourseData();
 		},
 		handleClick(data) {
-			this.getData(data.name);
+			this.getCourseData();
 		},
 		getCourseData() {
 			let self = this;

@@ -109,21 +109,20 @@ export default {
 		},
 		handleSizeChange(val) {
 			this.size = val;
-			this.getData();
+			this.getData(this.cid);
 		},
 		handleCurrentChange(val) {
 			this.page = val;
-			this.getData();
+			this.getData(this.cid);
 		},
 		handleClick(data) {
-			console.log(data.name, self.activeName);
 			this.getData(data.name);
 		},
 		getCourseData() {
 			let self = this;
 			this.Get(
 				"admin/course",
-				{ page: self.page - 1, size: self.size },
+				{ page: self.page - 1, size: self.size ,tid : this.$store.state.user.username },
 				function(data) {
 					if (data.success) {
 						self.courseData = data.data;

@@ -30,6 +30,9 @@ public class AdminService {
 	public Result getCourse(Page p,String period) {
 		return aDao.getCourse(p,period);
 	}
+	public Result getCourse(Page p,String period,String id) {
+		return aDao.getCourse(p,period,id);
+	}
 	
 	public Result insCourse(coures c) {
 		return aDao.insCourse(c);

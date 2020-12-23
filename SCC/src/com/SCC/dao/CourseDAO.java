@@ -220,7 +220,7 @@ public class CourseDAO {
 			List dataList = Dbutil.populate(ret, student.class);
 			System.out.println("elective表 获取数据(条): " + dataList.size());
 			db.close();
-			return Result.ok(dataList, this.count("elective", "coures_id", cid), "获取成功");
+			return Result.ok(dataList, this.count("elective", "coures_id", cid,1), "获取成功");
 		} catch (Exception e) {
 			System.out.println("错误" + e.toString());
 			return Result.bad("错误" + e.toString());
@@ -271,6 +271,23 @@ public class CourseDAO {
 			sql = "select count(*) from " + table + " where " + tableName + " = ?";
 			db = new Dbutil();
 			ResultSet ret = db.executeQuery(sql, id);
+			if (ret.next()) {
+				int count = ret.getInt(1);
+				db.close();
+				return count;
+			}
+		} catch (Exception e) {
+			System.out.println("错误" + e.toString());
+			return 0;
+		}
+		return 0;
+	}
+
+	public int count(String table, String tableName, String id, int Status) {
+		try {
+			sql = "select count(*) from " + table + " where " + tableName + " = ? and status = ? ";
+			db = new Dbutil();
+			ResultSet ret = db.executeQuery(sql, id, Status);
 			if (ret.next()) {
 				int count = ret.getInt(1);
 				db.close();

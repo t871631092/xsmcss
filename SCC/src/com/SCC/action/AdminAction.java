@@ -72,7 +72,9 @@ public class AdminAction extends BaseAction {
 		if (method.equals("GET")) {
 			if (request.getParameter("period")!=null) {
 				setResult(aService.getCourse(p,(String)request.getParameter("period")));
-			}else {
+			}else if (request.getParameter("tid")!=null){
+				setResult(aService.getCourse(p,null,request.getParameter("tid")));
+			}else{
 				setResult(aService.getCourse(p));
 			}
 		} else if(method.equals("POST")) {

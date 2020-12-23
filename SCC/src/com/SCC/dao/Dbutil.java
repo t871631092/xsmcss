@@ -22,10 +22,10 @@ import java.util.List;
 
 
 public class Dbutil {
-	public static final String url = "jdbc:mysql://47.96.131.166/SC?useSSL=false&useUnicode=true&characterEncoding=GBK&useOldAliasMetadataBehavior=true";//localhost
-	public static final String name = "com.mysql.jdbc.Driver";
+	public static final String url = "jdbc:mysql://127.0.0.1/SC?useSSL=false&useUnicode=true&characterEncoding=GBK&useOldAliasMetadataBehavior=true";//localhost
+	public static final String name = "com.mysql.cj.jdbc.Driver";
 	public static final String user = "root";
-	public static final String password = "";
+	public static final String password = "root";
 
 	public Connection con = null;
 	private PreparedStatement stmt = null;
